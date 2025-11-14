@@ -1,26 +1,26 @@
 <?php
-// Simple front page with links to login and register
-?><!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SulamProject — Welcome</title>
-  <link rel="stylesheet" href="assets/css/style.css?v=<?php echo filemtime(__DIR__ . '/assets/css/style.css'); ?>">
-  </head>
-  <body>
-    <div class="page-card">
-    <main class="centered">
-      <h1>WELCOME TO OurMasjid</h1>
-      <p class="lead">ONE STOP CENTRE FOR EVERYTHING</p>
+/**
+ * Front Controller
+ * Central entry point for all requests
+ */
 
-      <div class="actions">
-        <a class="btn" href="login.php">Login</a>
-        <a class="btn outline" href="register.php">Register</a>
-      </div>
+// Load router and routes
+$router = require_once __DIR__ . '/routes.php';
 
-      <footer class="small">Solatlah sebelum kamu disolatkan...</footer>
-    </main>
-    </div>
-  </body>
-</html>
+// Get request method and URI
+$method = $_SERVER['REQUEST_METHOD'];
+$uri = $_SERVER['REQUEST_URI'];
+
+// Remove base path if present (for subdirectory installations)
+$basePath = '/sulamproject';
+if (strpos($uri, $basePath) === 0) {
+    $uri = substr($uri, strlen($basePath)) ?: '/';
+}
+
+// Remove script name from URI if present
+if (strpos($uri, '/index.php') === 0) {
+    $uri = substr($uri, 10) ?: '/';
+}
+
+// Dispatch request
+$router->dispatch($method, $uri);

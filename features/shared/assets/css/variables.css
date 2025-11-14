@@ -1,0 +1,14 @@
+/* CSS Variables */
+:root {
+  --bg: #031d0d; /* green top */
+  --card: #0b1220;
+  --accent: #4f46e5;
+  --muted: #9aa4b2;
+  --btn-text: #ffffff;
+  --text-primary: #e6eef7;
+  --border-subtle: rgba(255,255,255,0.06);
+  --card-bg: linear-gradient(180deg, rgba(22,163,74,0.10), rgba(6,95,70,0.10));
+  --shadow-sm: 0 8px 22px rgba(0,0,0,0.28);
+  --shadow-md: 0 10px 24px rgba(0,0,0,0.28);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.35);
+}

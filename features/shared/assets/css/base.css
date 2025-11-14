@@ -1,0 +1,253 @@
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Segoe UI, Roboto, Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg), #065f46);
+  color: var(--text-primary);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+}
+
+/* Layout Helpers */
+.centered {
+  max-width: 520px;
+  margin: 8vh auto;
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.lead {
+  color: var(--muted);
+  margin-top: -0.25rem;
+}
+
+/* Cards */
+.small-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  padding: 1.25rem;
+}
+
+.page-card {
+  max-width: 960px;
+  margin: 6vh auto;
+  padding: 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Buttons */
+.btn {
+  background: var(--accent);
+  color: var(--btn-text);
+  padding: 0.6rem 1.05rem;
+  border-radius: 8px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.btn:hover {
+  filter: brightness(1.05);
+}
+
+.btn.outline {
+  background: transparent;
+  border: 1px solid rgba(76, 22, 177, 0.12);
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
+/* Forms */
+label {
+  display: block;
+  text-align: left;
+  margin: 0.6rem 0;
+  color: var(--muted);
+}
+
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=number],
+textarea,
+select {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: inherit;
+}
+
+/* Notices */
+.notice {
+  background: rgba(6, 114, 156, 0.04);
+  padding: 0.6rem;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+}
+
+.notice.error {
+  background: rgba(220, 38, 38, 0.1);
+  color: #fca5a5;
+}
+
+.notice.success {
+  background: rgba(34, 197, 94, 0.1);
+  color: #86efac;
+}
+
+/* Dashboard Layout */
+.dashboard {
+  display: flex;
+  gap: 1rem;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  flex: 0 0 240px;
+  padding: 1rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.18);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.sidebar .brand {
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.sidebar .nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.sidebar .nav a {
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+}
+
+.sidebar .nav a:hover {
+  background: var(--border-subtle);
+}
+
+.content {
+  flex: 1;
+  padding: 1rem;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 1rem;
+}
+
+.dashboard-cards {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  max-width: 1000px;
+  margin: 2rem auto;
+}
+
+.dashboard-card {
+  display: block;
+  padding: 1.2rem;
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-md);
+  transition: transform .15s ease, box-shadow .15s ease, background .2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34);
+  background: linear-gradient(180deg, rgba(22,163,74,0.14), rgba(6,95,70,0.14));
+}
+
+.dashboard-card h3 {
+  margin: 0.4rem 0 0.25rem;
+}
+
+.dashboard-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.dashboard-card .icon {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--border-subtle);
+  margin-bottom: 0.4rem;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .dashboard {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    position: relative;
+    height: auto;
+    width: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  
+  .dashboard-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .actions {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
