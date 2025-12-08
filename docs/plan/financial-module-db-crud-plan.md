@@ -4,7 +4,7 @@
 This plan tracks the work to move the **Financial** module (Akaun Bayaran & Akaun Terimaan) from placeholder data to fully database-backed CRUD, aligned with SulamProject conventions.
 
 Scope:
-- Design and create two tables in the `masjid` database
+- Design and create two tables in the `masjidkamek` database
 - Implement PHP data access layer using `mysqli` prepared statements
 - Wire listing + create + update + delete into existing financial pages
 - Keep routing, layouts, and RBAC consistent with existing modules

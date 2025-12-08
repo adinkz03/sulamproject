@@ -230,7 +230,7 @@ Test-Path "c:\laragon\www\sulamproject\storage\logs"
 Create `.env` file for production:
 ```env
 DB_HOST=localhost
-DB_NAME=masjid
+DB_NAME=masjidkamek
 DB_USER=root
 DB_PASS=your_secure_password
 APP_DEBUG=false

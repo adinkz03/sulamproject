@@ -7,7 +7,7 @@
 
 <div class="content-container">
     <!-- Filter Form -->
-    <div class="card card--filter mb-4 border-0">
+    <div class="card card--outline mb-4">
         <div class="card-body py-4 px-4">
             <form method="GET" class="form-inline align-items-center">
                 <div class="form-group mb-0 mr-4">

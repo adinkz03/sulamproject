@@ -3,12 +3,12 @@ A secure, role-based system for Desa Ilmu that replaces Excel/myMasjid to manage
 
 ## Registration Flow
 
-The `register.php` page persists user accounts into a MySQL database named `masjid`, table `users`.
+The application persists user accounts into a MySQL database named `masjidkamek`, table `users`.
 
 ### Auto-provisioning
 On first load (or first registration submit), the helper `db.php` will:
 1. Connect to MySQL (`localhost`, user `root`, blank password — adjust if different).
-2. Create the database `masjid` if it does not exist.
+2. Create the database `masjidkamek` if it does not exist (or import `database/schema.sql`).
 3. Select the database and create a `users` table if missing.
 
 ### `users` table structure
@@ -31,7 +31,7 @@ CREATE TABLE `users` (
 1. Start Apache & MySQL in the Laragon control panel.
 2. Place the project in `c:\laragon\www\sulamcode\sulamproject`.
 3. Visit `http://localhost/sulamcode/sulamproject/register.php` to create an account.
-4. Check via phpMyAdmin (`http://localhost/phpmyadmin`) → database `masjid` → table `users`.
+4. Check via phpMyAdmin (`http://localhost/phpmyadmin`) → database `masjidkamek` → table `users`.
 
 ### Adjusting Credentials
 Edit `db.php` if your MySQL root password differs or you want a dedicated user:
@@ -43,7 +43,7 @@ $DB_PASS = 'strong_password_here';
 Create the user in MySQL:
 ```sql
 CREATE USER 'app_user'@'localhost' IDENTIFIED BY 'strong_password_here';
-GRANT ALL PRIVILEGES ON masjid.* TO 'app_user'@'localhost';
+GRANT ALL PRIVILEGES ON masjidkamek.* TO 'app_user'@'localhost';
 FLUSH PRIVILEGES;
 ```
 

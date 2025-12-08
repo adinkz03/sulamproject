@@ -92,7 +92,7 @@ feature-name/
 
 ### Database Configuration
 Database connection is managed in `db.php`:
-- **Database**: `masjid` (auto-created)
+- **Database**: `masjidkamek` (import from `database/schema.sql`)
 - **Table**: `users` (auto-created)
 - **Default credentials**: root@localhost, blank password
 - **Environment variables**: Supported via `getenv()` fallbacks

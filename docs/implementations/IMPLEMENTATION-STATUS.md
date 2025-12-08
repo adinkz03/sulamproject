@@ -304,7 +304,7 @@ $lastId = $db->lastInsertId();
 Create `.env` file (not in version control):
 ```
 DB_HOST=localhost
-DB_NAME=masjid
+DB_NAME=masjidkamek
 DB_USER=root
 DB_PASS=your_password
 APP_DEBUG=false
