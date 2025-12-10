@@ -59,8 +59,19 @@
             </div>
 
             <div class="form-group">
-                <label for="income">Monthly Income (MYR)</label>
-                <input type="number" id="income" name="income" step="0.01" value="<?php echo htmlspecialchars($user['income'] ?? ''); ?>" class="form-control">
+                <label for="income_range">Monthly Income Range</label>
+                <select id="income_range" name="income_range" class="form-control">
+                    <option value="">Select Income Range</option>
+                    <option value="below_5250" <?php echo ($user['income_range'] ?? '') === 'below_5250' ? 'selected' : ''; ?>>
+                        Below RM5,250
+                    </option>
+                    <option value="between_5250_11820" <?php echo ($user['income_range'] ?? '') === 'between_5250_11820' ? 'selected' : ''; ?>>
+                        RM5,250 - RM11,820
+                    </option>
+                    <option value="above_11820" <?php echo ($user['income_range'] ?? '') === 'above_11820' ? 'selected' : ''; ?>>
+                        Above RM11,820
+                    </option>
+                </select>
             </div>
 
             <div class="form-actions full-width" style="margin-top: 1.5rem;">
