@@ -89,3 +89,32 @@ th.sticky-col-left {
   background-color: #f3f4f6;
   /* Adjust per theme - should match hover color */
 }
+
+/* Badge for Reference Numbers */
+.badge-ref {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  font-size: 0.75em;
+  font-weight: 500;
+  line-height: 1;
+  color: #4b5563;
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.25rem;
+  margin-top: 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.badge-ref:hover {
+  background-color: #e5e7eb;
+  border-color: #d1d5db;
+  color: #1f2937;
+}
+
+.badge-ref:active {
+  transform: translateY(1px);
+  background-color: #d1d5db;
+}

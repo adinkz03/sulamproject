@@ -64,11 +64,19 @@ function formatDepositAmount($value) {
                                 <span class="text-muted">-</span>
                             <?php endif; ?>
                         </td>
-                        <td class="sticky-col-left"><?php echo htmlspecialchars($row['description']); ?></td>
+                        <td class="sticky-col-left">
+                            <div style="font-weight: 600;"><?php echo htmlspecialchars($row['description']); ?></div>
+                            <div style="color: #6b7280; font-size: 0.85em;"><?php echo htmlspecialchars($row['received_from']); ?></div>
+                        </td>
                         <td>
                             <span class="badge badge-light border">
                                 <?php echo htmlspecialchars(ucfirst($row['payment_method'] ?? 'cash')); ?>
                             </span>
+                            <?php if (!empty($row['payment_reference'])): ?>
+                                <div class="badge-ref" onclick="copyRef('<?php echo htmlspecialchars($row['payment_reference'], ENT_QUOTES); ?>', this)" title="Click to copy">
+                                    Ref: <?php echo htmlspecialchars($row['payment_reference']); ?>
+                                </div>
+                            <?php endif; ?>
                         </td>
                         <?php 
                         $rowTotal = 0;
@@ -102,3 +110,60 @@ function formatDepositAmount($value) {
 </div>
 
 <link rel="stylesheet" href="<?php echo url('features/financial/admin/assets/css/financial.css'); ?>">
+
+<script>
+function copyRef(text, el) {
+    // Navigator clipboard API
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            showCopyFeedback(el);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            fallbackCopy(text, el);
+        });
+    } else {
+        fallbackCopy(text, el);
+    }
+}
+
+function fallbackCopy(text, el) {
+    // Fallback using temporary textarea
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.left = "-9999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
+        showCopyFeedback(el);
+    } catch (err) {
+        console.error('Fallback copy failed', err);
+    }
+    
+    document.body.removeChild(textArea);
+}
+
+function showCopyFeedback(el) {
+    const originalContent = el.innerHTML;
+    // Store original style if needed
+    const originalStyle = el.getAttribute('style');
+    
+    // Feedback style (Green/Success)
+    el.style.backgroundColor = '#d1fae5'; 
+    el.style.borderColor = '#34d399';
+    el.style.color = '#065f46';
+    el.innerHTML = '<i class="fas fa-check"></i> Copied';
+    
+    setTimeout(() => {
+        el.innerHTML = originalContent;
+        if (originalStyle) {
+            el.setAttribute('style', originalStyle);
+        } else {
+            el.removeAttribute('style');
+        }
+    }, 1500);
+}
+</script>
