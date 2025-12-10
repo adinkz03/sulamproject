@@ -77,14 +77,17 @@ $amountInWords = numberToWords($totalAmount);
         
         body {
             font-family: 'Arial', sans-serif;
-            font-size: 12pt;
-            line-height: 1.4;
+            font-size: 11pt;
+            line-height: 1.3;
             color: #000;
             background: #fff;
         }
 
         /* Print-specific styles */
         @media print {
+            @page {
+                margin: 0;
+            }
             body {
                 margin: 0;
                 padding: 0;
@@ -98,6 +101,9 @@ $amountInWords = numberToWords($totalAmount);
                 border: none !important;
                 box-shadow: none !important;
                 margin: 0 !important;
+                width: 100% !important;
+                max-width: none !important;
+                padding: 15mm !important; /* Restore padding for print */
                 page-break-after: always;
             }
         }
@@ -128,182 +134,154 @@ $amountInWords = numberToWords($totalAmount);
             .no-print button:hover {
                 background: #357abd;
             }
+
+            .receipt-container {
+                width: 210mm; /* A4 width */
+                min-height: 297mm; /* A4 height */
+                margin: 0 auto;
+                padding: 20mm;
+                background: #fff;
+                border: 1px solid #ccc;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
         }
 
-        /* Receipt container */
-        .receipt-container {
-            width: 210mm;
-            min-height: 148mm; /* A5 height */
-            margin: 0 auto;
-            padding: 15mm;
-            background: #fff;
-            border: 2px solid #000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        /* Header section */
-        .receipt-header {
+        /* Layout Elements */
+        .header-section {
             text-align: center;
-            border-bottom: 2px solid #000;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .receipt-header h1 {
-            font-size: 14pt;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .receipt-header .address {
-            font-size: 10pt;
-        }
-
-        /* Title */
-        .receipt-title {
-            text-align: center;
-            margin: 15px 0;
-            padding: 8px;
-            background: #f5f5f5;
-            border: 1px solid #ccc;
-        }
-
-        .receipt-title h2 {
-            font-size: 14pt;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        /* Info grid */
-        .receipt-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
             margin-bottom: 20px;
         }
 
-        .info-row {
-            display: flex;
-            margin-bottom: 8px;
-        }
-
-        .info-label {
-            width: 120px;
-            font-weight: bold;
-        }
-
-        .info-value {
-            flex: 1;
-            border-bottom: 1px dotted #999;
-            padding-left: 5px;
-        }
-
-        /* Full width info rows */
-        .info-full {
-            grid-column: 1 / -1;
-        }
-
-        /* Amount box */
-        .amount-section {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 20px;
-            align-items: end;
-            margin: 20px 0;
-            padding: 15px;
+        .receipt-title-box {
+            background: #f2f2f2;
             border: 1px solid #ccc;
-            background: #fafafa;
-        }
-
-        .amount-words {
-            font-size: 11pt;
-        }
-
-        .amount-words .label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .amount-words .value {
-            font-style: italic;
-            text-transform: uppercase;
-        }
-
-        .amount-box {
-            border: 2px solid #000;
-            padding: 10px 20px;
+            padding: 10px;
+            margin-bottom: 15px;
             text-align: center;
-            background: #fff;
-            min-width: 150px;
         }
 
-        .amount-box .label {
-            font-size: 10pt;
-            font-weight: bold;
-        }
-
-        .amount-box .value {
+        .receipt-title-box h2 {
             font-size: 16pt;
             font-weight: bold;
+            text-transform: uppercase;
+            margin: 0;
         }
 
-        /* Payment method section */
-        .payment-section {
-            margin: 15px 0;
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-
-        .payment-section .label {
+        .org-name {
+            font-size: 14pt;
             font-weight: bold;
+            text-transform: uppercase;
             margin-bottom: 5px;
         }
 
-        /* Signature section */
-        .signature-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 40px;
-            padding-top: 20px;
-        }
-
-        .signature-box {
-            text-align: center;
-        }
-
-        .signature-line {
-            border-top: 1px solid #000;
-            margin-top: 50px;
-            padding-top: 5px;
-        }
-
-        .signature-label {
+        .org-address {
             font-size: 10pt;
+            margin-bottom: 15px;
+        }
+
+        .header-line {
+            border-bottom: 2px solid #000;
+            margin-bottom: 20px;
+        }
+
+        /* Forms / Key-Value Pairs */
+        .info-grid {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .row {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+
+        .col-left {
+            flex: 0 0 60%;
+            display: flex;
+        }
+
+        .col-right {
+            flex: 0 0 40%;
+            display: flex;
+            padding-left: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+            width: 110px; /* Fixed width for labels */
+            flex-shrink: 0;
+        }
+
+        .value-line {
+            flex-grow: 1;
+            border-bottom: 1px dotted #999;
+            padding-left: 5px;
+            position: relative;
+            top: -2px; /* Visual alignment with dots */
+        }
+
+
+
+        /* Payment Method Section */
+        .payment-section {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .payment-row {
+            margin-top: 5px;
+        }
+
+        /* Bottom Section Container */
+        .bottom-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Align top */
+            margin-top: 40px;
+        }
+
+        /* Summary/Payment Box (Left) */
+        .summary-box {
+            width: 45%;
+            border: 1px solid #000;
+        }
+
+        .summary-row {
+            display: flex;
+            padding: 8px 10px;
+        }
+        
+        .summary-row:first-child {
+            border-bottom: 1px solid #000;
+        }
+
+        .summary-label {
+            font-weight: bold;
+            width: 120px;
+        }
+
+        .summary-value {
+             flex: 1;
+             text-align: right;
+             font-weight: bold;
+        }
+
+        /* Signatures (Right) */
+        .signature-section {
+            width: 45%;
+            /* Margins handled by parent flex container */
         }
 
         /* Footer */
-        .receipt-footer {
-            margin-top: 30px;
-            padding-top: 10px;
-            border-top: 1px solid #ccc;
-            font-size: 9pt;
+        .footer {
+            margin-top: 50px;
             text-align: center;
+            font-size: 8pt;
             color: #666;
-        }
-
-        /* Lampiran label */
-        .lampiran-label {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 9pt;
-            color: #666;
-        }
-
-        .receipt-wrapper {
-            position: relative;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
         }
     </style>
 </head>
@@ -314,82 +292,85 @@ $amountInWords = numberToWords($totalAmount);
         <button onclick="window.close()">Tutup</button>
     </div>
 
-    <div class="receipt-wrapper">
-        <div class="receipt-container">
-            <span class="lampiran-label">Lampiran 6</span>
+    <div class="receipt-container">
+        <!-- Title Box -->
+        <div class="receipt-title-box">
+            <h2>RESIT RASMI</h2>
+        </div>
+
+        <!-- Org Header -->
+        <div class="header-section">
+            <div class="org-name">JAWATANKUASA MASJID DARUL ULUM</div>
+            <div class="org-address">
+                Lorong Desa Ilmu 22,<br>
+                94300 Kota Samarahan, Sarawak
+            </div>
+        </div>
+
+        <div class="header-line"></div>
+
+        <!-- Info Grid -->
+        <div class="info-grid">
+            <div class="row">
+                <div class="col-left">
+                    <span class="label">No. Resit:</span>
+                    <span class="value-line"><?php echo e($deposit['receipt_number'] ?? '-'); ?></span>
+                </div>
+                <div class="col-right">
+                    <span class="label" style="width: 60px;">Tarikh:</span>
+                    <span class="value-line"><?php echo e($formattedDate); ?></span>
+                </div>
+            </div>
             
-            <!-- Header -->
-            <div class="receipt-header">
-                <h1>Jawatankuasa Pengurusan Masjid Kamek</h1>
-                <p class="address">
-                    Jalan Masjid, Kampung Kamek,<br>
-                    12345 Bandar, Negeri, Malaysia<br>
-                    Tel: 012-345 6789
-                </p>
+            <div class="row">
+                <span class="label">Diterima Dari:</span>
+                <span class="value-line"><?php echo e($deposit['received_from'] ?? '-'); ?></span>
             </div>
 
-            <!-- Title -->
-            <div class="receipt-title">
-                <h2>Resit Rasmi (Official Receipt)</h2>
+            <div class="row">
+                <span class="label">Jumlah:</span>
+                <span class="value-line" style="font-style: italic; text-transform: uppercase;">
+                    <?php echo e($amountInWords); ?> (RM <?php echo number_format($totalAmount, 2); ?>)
+                </span>
             </div>
 
-            <!-- Receipt Info -->
-            <div class="receipt-info">
-                <div class="info-row">
-                    <span class="info-label">No. Resit:</span>
-                    <span class="info-value"><?php echo e($deposit['receipt_number'] ?? '-'); ?></span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Tarikh:</span>
-                    <span class="info-value"><?php echo e($formattedDate); ?></span>
-                </div>
-                <div class="info-row info-full">
-                    <span class="info-label">Diterima Dari:</span>
-                    <span class="info-value"><?php echo e($deposit['received_from'] ?? '-'); ?></span>
-                </div>
-                <div class="info-row info-full">
-                    <span class="info-label">Perkara:</span>
-                    <span class="info-value"><?php echo e($deposit['description'] ?? $categoryLabel); ?></span>
-                </div>
+            <div class="row">
+                <span class="label">Perkara:</span>
+                <span class="value-line"><?php echo e($deposit['description'] ?? $categoryLabel); ?></span>
             </div>
 
-            <!-- Amount Section -->
-            <div class="amount-section">
-                <div class="amount-words">
-                    <div class="label">Jumlah (Dalam Perkataan):</div>
-                    <div class="value"><?php echo e($amountInWords); ?></div>
-                </div>
-                <div class="amount-box">
-                    <div class="label">RM</div>
-                    <div class="value"><?php echo number_format($totalAmount, 2); ?></div>
-                </div>
-            </div>
+        </div>
 
-            <!-- Payment Method -->
-            <div class="payment-section">
-                <div class="label">Kaedah Pembayaran:</div>
-                <div class="value"><?php echo e($paymentMethodDisplay); ?></div>
+        <div class="bottom-section">
+            <!-- Payment/Amount Box -->
+            <div class="summary-box">
+                <div class="summary-row">
+                    <span class="summary-label">RM</span>
+                    <span class="summary-value"><?php echo number_format($totalAmount, 2); ?></span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">TUNAI / BANK</span>
+                    <span class="summary-value"><?php echo e($paymentMethodDisplay); ?></span>
+                </div>
             </div>
 
             <!-- Signature Section -->
             <div class="signature-section">
-                <div class="signature-box">
-                    <div class="signature-line">
-                        <span class="signature-label">Disediakan Oleh / Prepared By</span>
-                    </div>
+                <div class="row">
+                    <span class="label">Disediakan Oleh:</span>
+                    <span class="value-line">&nbsp;</span>
                 </div>
-                <div class="signature-box">
-                    <div class="signature-line">
-                        <span class="signature-label">Tandatangan / Signature</span>
-                    </div>
+                <div class="row">
+                    <span class="label">Tandatangan:</span>
+                    <span class="value-line">&nbsp;</span>
                 </div>
             </div>
+        </div>
 
-            <!-- Footer -->
-            <div class="receipt-footer">
-                <p>Resit ini adalah bukti rasmi penerimaan wang. Sila simpan untuk rujukan.</p>
-                <p>This receipt is an official proof of payment. Please keep for your records.</p>
-            </div>
+        <!-- Footer -->
+        <div class="footer">
+            <p>Resit ini adalah bukti rasmi penerimaan wang. Sila simpan untuk rujukan.</p>
+            <p>This receipt is an official proof of payment. Please keep for your records.</p>
         </div>
     </div>
 
