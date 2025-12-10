@@ -39,9 +39,10 @@ $periodString = "{$displayStartDate} HINGGA {$displayEndDate}";
 
         /* Print styles */
         @media print {
-            body { margin: 0; padding: 0; }
+            @page { margin: 0; }
+            body { margin: 0; padding: 15mm !important; } /* Restore visual margin effectively */
             .no-print { display: none !important; }
-            .page-container { border: none !important; box-shadow: none !important; margin: 0 !important; }
+            .page-container { border: none !important; box-shadow: none !important; margin: 0 !important; width: 100% !important; }
         }
 
         /* Screen styles */
@@ -65,6 +66,7 @@ $periodString = "{$displayStartDate} HINGGA {$displayEndDate}";
         
         .statement-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
         .statement-table td { padding: 4px; vertical-align: top; }
+        .statement-table tr { break-inside: avoid; page-break-inside: avoid; } /* Prevent rows from splitting */
         
         /* Flexible layout relying on the single table structure for alignment */
         .col-label { width: 1%; white-space: nowrap; padding-right: 15px; vertical-align: top; }
