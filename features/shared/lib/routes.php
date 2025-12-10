@@ -291,6 +291,42 @@ $router->post('/events', function() use ($ROOT) {
     }
 });
 
+$router->get('/death-funeral', function() use ($ROOT) {
+    initSecureSession();
+    requireAuth();
+    if (isAdmin()) {
+        require $ROOT . '/features/death-funeral/admin/pages/death-funeral.php';
+    } else {
+        require $ROOT . '/features/death-funeral/user/pages/death-funeral.php';
+    }
+});
+
+// Death & Funeral AJAX endpoints (must come before generic /death-funeral route)
+$router->post('/death-funeral/ajax/verify', function() use ($ROOT) {
+    initSecureSession();
+    requireAuth();
+    requireAdmin();
+    require $ROOT . '/features/death-funeral/admin/ajax/verify-notification.php';
+});
+
+$router->post('/death-funeral/ajax/delete', function() use ($ROOT) {
+    initSecureSession();
+    requireAuth();
+    requireAdmin();
+    require $ROOT . '/features/death-funeral/admin/ajax/delete-notification.php';
+});
+
+$router->post('/death-funeral', function() use ($ROOT) {
+    initSecureSession();
+    requireAuth();
+    if (isAdmin()) {
+        require $ROOT . '/features/death-funeral/admin/pages/death-funeral.php';
+    } else {
+        // Allow users to post death notifications
+        require $ROOT . '/features/death-funeral/user/pages/death-funeral.php';
+    }
+});
+
 $router->get('/waris', function() use ($ROOT) {
     initSecureSession();
     requireAuth();

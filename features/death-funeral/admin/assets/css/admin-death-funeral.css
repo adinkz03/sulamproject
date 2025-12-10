@@ -1,0 +1,207 @@
+/* Admin Death & Funeral Styles */
+
+.death-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.death-page .card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.death-page h2 {
+    margin-top: 0;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.death-page h3 {
+    margin-top: 0;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.death-page .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.death-page .form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.death-page .empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: var(--muted);
+}
+
+.death-page table {
+    font-size: 0.9rem;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.death-page table thead {
+    background-color: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.death-page table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.death-page table tbody tr:hover {
+    background-color: var(--bg-secondary);
+}
+
+.death-page table th {
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.death-page table td {
+    padding: 0.75rem;
+}
+
+.death-page .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.death-page .section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.death-page .notice {
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    background-color: #e0e7ff;
+    color: #3730a3;
+    border-left: 4px solid #3b82f6;
+}
+
+.death-page .notice.error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border-left-color: #ef4444;
+}
+
+.death-page .notice.success {
+    background-color: #d1fae5;
+    color: #065f46;
+    border-left-color: #10b981;
+}
+
+.death-page .btn-primary,
+.death-page .btn-secondary {
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    font-size: 0.95rem;
+}
+
+.death-page .btn-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.death-page .btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.death-page .btn-secondary {
+    background-color: #6b7280;
+    color: white;
+}
+
+.death-page .btn-secondary:hover {
+    background-color: #4b5563;
+}
+
+.death-page .btn-small {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+}
+
+.death-page .btn-small:hover {
+    background-color: #2563eb;
+}
+
+.death-page .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.death-page .stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.death-page .stat-card.pending {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.death-page .stat-card.verified {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.death-page .stat-card h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.death-page .stat-card .number {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .death-page .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .death-page .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .death-page table {
+        font-size: 0.85rem;
+    }
+
+    .death-page table th,
+    .death-page table td {
+        padding: 0.5rem;
+    }
+}

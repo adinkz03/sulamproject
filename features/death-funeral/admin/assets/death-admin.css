@@ -1,0 +1,30 @@
+/* Death & Funeral Admin Styles - follows site card/grid patterns */
+
+.death-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.page-card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 10px rgba(10, 10, 10, 0.04); }
+
+.section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+.section-title { font-size:1.25rem; font-weight:600; }
+
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.form-group { display:flex; flex-direction:column; gap:0.5rem; }
+.form-group.full-width { grid-column:1 / -1; }
+.form-label { font-weight:500; color:var(--text-secondary,#4b5563); }
+.form-input, .form-textarea { padding:0.6rem 0.9rem; border:1px solid #e5e7eb; border-radius:8px; }
+.form-textarea { min-height:120px; resize:vertical; }
+
+.btn-primary { background:var(--primary-color,#047857); color:#fff; padding:0.6rem 1.2rem; border-radius:8px; border:none; cursor:pointer; }
+
+.notice { background:#fffbea; border:1px solid #f0e6b8; padding:0.75rem 1rem; border-radius:8px; color:#5a4d00; }
+
+.empty-state { padding:2rem; border-radius:12px; border:1px dashed #e5e7eb; color:#6b7280; background:white; }
+
+/* Keep layout consistent with other feature admin CSS to avoid overlapping sidebars */
+.page-container { display:block; }

@@ -43,6 +43,9 @@ $userRole = $isAdmin ? 'Admin' : 'Resident';
     <a href="<?php echo $base; ?>/events" class="<?php echo str_starts_with($path, "$base/events") ? 'active' : ''; ?>">
       <i class="fas fa-calendar-alt"></i> Events
     </a>
+    <a href="<?php echo $base; ?>/death-funeral" class="<?php echo str_starts_with($path, "$base/death-funeral") ? 'active' : ''; ?>">
+      <i class="fas fa-dove"></i> Death Funeral
+    </a>
 
     
     <!-- User Profile Section -->
