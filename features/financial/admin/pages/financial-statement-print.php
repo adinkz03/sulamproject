@@ -35,7 +35,7 @@ $periodString = "{$displayStartDate} HINGGA {$displayEndDate}";
     <style>
         /* Reset and base styles */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Arial', sans-serif; font-size: 11pt; line-height: 1.3; color: #000; background: #fff; }
+        body { font-family: 'Arial', sans-serif; font-size: 10pt; line-height: 1.3; color: #000; background: #fff; }
 
         /* Print styles */
         @media print {
@@ -63,18 +63,42 @@ $periodString = "{$displayStartDate} HINGGA {$displayEndDate}";
 
         .section-title { font-weight: bold; margin-top: 15px; margin-bottom: 5px; text-transform: uppercase; }
         
-        .statement-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        .statement-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
         .statement-table td { padding: 4px; vertical-align: top; }
-        .col-label { width: 45%; }
-        .col-box { width: 30%; }
-        .col-nota { width: 5%; text-align: center; }
-        .col-total { width: 20%; text-align: right; }
-
-        .box-container { border: 1px solid #000; padding: 10px; min-height: 60px; }
-        .box-item { display: flex; justify-content: space-between; margin-bottom: 2px; }
         
-        .total-line { border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 5px 0; font-weight: bold; margin-top: 5px; }
-        .double-line { border-bottom: 3px double #000; }
+        /* Flexible layout relying on the single table structure for alignment */
+        .col-label { width: 1%; white-space: nowrap; padding-right: 15px; vertical-align: top; }
+        .col-box { width: auto; vertical-align: top; }
+        .col-nota { width: 15%; text-align: center; vertical-align: top; }
+        .col-total { width: 1%; white-space: nowrap; text-align: right; vertical-align: top; }
+
+        .box-container { border: 1px solid #000; padding: 8px; font-size: 10pt; }
+        .box-item { display: flex; justify-content: space-between; margin-bottom: 2px; gap: 15px; align-items: flex-start; }
+        .box-item span:first-child { flex: 1; word-wrap: break-word; overflow-wrap: break-word; }
+        .box-item span:last-child { white-space: nowrap; }
+        
+        .row-item { margin-bottom: 2px; height: auto; min-height: 1.3em; }
+        
+        .amount-underline { border-bottom: 1px solid #000; display: inline-block; min-width: 80px; text-align: right; padding-bottom: 1px; }
+        .amount-underline-bold { border-bottom: 4px solid #000; display: inline-block; min-width: 80px; text-align: right; padding-bottom: 1px; }
+        .amount-double { border-bottom: 3px double #000; display: inline-block; min-width: 80px; text-align: right; padding-bottom: 1px; }
+        .amount-double-custom { 
+            border-bottom: 1px solid #000; 
+            display: inline-block; 
+            min-width: 80px; 
+            text-align: right; 
+            padding-bottom: 1px; 
+            position: relative; 
+            margin-bottom: 3px; 
+        }
+        .amount-double-custom::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            bottom: -4px;
+            border-bottom: 2px solid #000;
+        }
 
         .signatures { display: flex; justify-content: space-between; margin-top: 50px; }
         .sig-box { width: 30%; border: 1px solid #000; padding: 10px; height: 120px; font-size: 9pt; }
@@ -91,20 +115,16 @@ $periodString = "{$displayStartDate} HINGGA {$displayEndDate}";
     </div>
 
     <div class="page-container">
-        <div class="lampiran-label">
-            Lampiran 9<br>
-            [Ruj. 54]
-        </div>
 
         <div class="header">
             <h1>PENYATA TERIMAAN DAN BAYARAN</h1>
             
             <div class="header-line">
-                (JAWATANKUASA PENGURUSAN MASJID KAMEK)
+                (JAWATANKUASA PENGURUSAN MASJID DARUL ULUM)
             </div>
             
             <div class="header-line">
-                (JALAN MASJID, KAMPUNG KAMEK, 12345 BANDAR, NEGERI)
+                (LORONG DESA ILMU 22, 94300 KOTA SAMARAHAN, SARAWAK)
             </div>
 
             <div style="margin-top: 20px;">
@@ -114,161 +134,190 @@ $periodString = "{$displayStartDate} HINGGA {$displayEndDate}";
             </div>
         </div>
 
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 5px; font-weight: bold;">
-            <div style="width: 5%; text-align: center;">Nota</div>
-            <div style="width: 20%; text-align: right;">(tahun)<br>RM</div>
-        </div>
-
-        <!-- Opening Balance -->
+        <!-- Single Table for Alignment -->
         <table class="statement-table">
-            <tr>
-                <td class="col-label">
-                    <div class="bold">BAKI PADA <?php echo $displayStartDate; ?></div>
-                    <div style="margin-left: 10px;">Wang Tunai di tangan</div>
-                    <div style="margin-left: 10px;">Wang Tunai di bank</div>
-                    <div style="margin-left: 10px;">Pelaburan</div>
-                </td>
-                <td class="col-box">
-                    <div class="box-container">
-                        <div class="box-item">
-                            <span>Tunai:</span>
-                            <span><?php echo number_format($data['opening_balance']['cash'], 2); ?></span>
+            <!-- Headers -->
+            <thead>
+                <tr>
+                    <td colspan="2"></td>
+                    <td style="text-align: center; font-weight: bold;">Nota</td>
+                    <td style="text-align: right; font-weight: bold; vertical-align: bottom;">
+                        <div style="display: inline-block; text-align: center; min-width: 60px;">
+                            <?php echo date('Y', strtotime($endDate)); ?>
+                            <div style="border-bottom: 1px solid #000;"></div>
+                            (tahun)<br>RM
                         </div>
-                        <div class="box-item">
-                            <span>Bank:</span>
-                            <span><?php echo number_format($data['opening_balance']['bank'], 2); ?></span>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Opening Balance -->
+                <tr>
+                    <td colspan="4" class="bold" style="padding-top: 15px;">
+                        BAKI PADA <?php echo $displayStartDate; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-label">
+                        <div style="padding-top: 10px;">
+                            <div class="row-item">Wang Tunai di tangan</div>
+                            <div class="row-item">Wang Tunai di bank</div>
+                            <div class="row-item">Pelaburan</div>
                         </div>
-                        <div class="box-item">
-                            <span>Pelaburan:</span>
-                            <span>0.00</span>
+                    </td>
+                    <td class="col-box">
+                        <div class="box-container">
+                            <div class="row-item text-right"><?php echo number_format($data['opening_balance']['cash'], 2); ?></div>
+                            <div class="row-item text-right"><?php echo number_format($data['opening_balance']['bank'], 2); ?></div>
+                            <div class="row-item text-right">0.00</div>
                         </div>
-                    </div>
-                </td>
-                <td class="col-nota"></td>
-                <td class="col-total">
-                    <div style="margin-top: 25px; border-bottom: 1px solid #000;">
-                        <?php echo number_format($data['opening_balance']['cash'] + $data['opening_balance']['bank'], 2); ?>
-                    </div>
-                </td>
-            </tr>
-        </table>
+                    </td>
+                    <td class="col-nota"></td>
+                    <td class="col-total">
+                        <div style="padding-top: 10px;">
+                            <div class="row-item"></div>
+                            <div class="row-item"></div>
+                            <div class="row-item">
+                                <span class="amount-underline">
+                                    <?php echo number_format($data['opening_balance']['cash'] + $data['opening_balance']['bank'], 2); ?>
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
 
-        <!-- Receipts -->
-        <table class="statement-table">
-            <tr>
-                <td class="col-label">
-                    <div class="bold">A. TERIMAAN</div>
-                </td>
-                <td class="col-box">
-                    <div class="box-container">
-                        <?php foreach ($data['receipts'] as $item): ?>
-                        <div class="box-item">
-                            <span><?php echo $item['label']; ?></span>
-                            <span><?php echo number_format($item['amount'], 2); ?></span>
+                <!-- Receipts -->
+                <tr>
+                    <td colspan="4" class="bold" style="padding-top: 15px;">
+                        A. TERIMAAN
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-label"></td>
+                    <td class="col-box">
+                        <div class="box-container">
+                            <?php foreach ($data['receipts'] as $item): ?>
+                            <div class="box-item">
+                                <span><?php echo $item['label']; ?></span>
+                                <span><?php echo number_format($item['amount'], 2); ?></span>
+                            </div>
+                            <?php endforeach; ?>
+                            <?php if (empty($data['receipts'])): ?>
+                                <div style="text-align: center; color: #999;">- Tiada Terimaan -</div>
+                            <?php endif; ?>
                         </div>
-                        <?php endforeach; ?>
-                        <?php if (empty($data['receipts'])): ?>
-                            <div style="text-align: center; color: #999;">- Tiada Terimaan -</div>
-                        <?php endif; ?>
-                    </div>
-                </td>
-                <td class="col-nota"></td>
-                <td class="col-total"></td>
-            </tr>
-            <tr>
-                <td class="col-label bold">JUMLAH TERIMAAN</td>
-                <td class="col-box"></td>
-                <td class="col-nota"></td>
-                <td class="col-total">
-                    <div style="border-bottom: 1px solid #000;">
-                        <?php echo number_format($data['total_receipts'], 2); ?>
-                    </div>
-                </td>
-            </tr>
-        </table>
+                    </td>
+                    <td class="col-nota"></td>
+                    <td class="col-total"></td>
+                </tr>
+                <tr>
+                    <td class="col-label bold">JUMLAH TERIMAAN</td>
+                    <td class="col-box"></td>
+                    <td class="col-nota"></td>
+                    <td class="col-total">
+                        <span class="amount-underline">
+                            <?php echo number_format($data['total_receipts'], 2); ?>
+                        </span>
+                    </td>
+                </tr>
 
-        <!-- Payments -->
-        <table class="statement-table">
-            <tr>
-                <td class="col-label">
-                    <div class="bold">B. BAYARAN</div>
-                </td>
-                <td class="col-box">
-                    <div class="box-container">
-                        <?php foreach ($data['payments'] as $item): ?>
-                        <div class="box-item">
-                            <span><?php echo $item['label']; ?></span>
-                            <span><?php echo number_format($item['amount'], 2); ?></span>
+                <!-- Payments -->
+                <tr>
+                    <td colspan="4" class="bold" style="padding-top: 15px;">
+                        B. BAYARAN
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-label"></td>
+                    <td class="col-box">
+                        <div class="box-container">
+                            <?php foreach ($data['payments'] as $item): ?>
+                            <div class="box-item">
+                                <span><?php echo $item['label']; ?></span>
+                                <span><?php echo number_format($item['amount'], 2); ?></span>
+                            </div>
+                            <?php endforeach; ?>
+                            <?php if (empty($data['payments'])): ?>
+                                <div style="text-align: center; color: #999;">- Tiada Bayaran -</div>
+                            <?php endif; ?>
                         </div>
-                        <?php endforeach; ?>
-                        <?php if (empty($data['payments'])): ?>
-                            <div style="text-align: center; color: #999;">- Tiada Bayaran -</div>
-                        <?php endif; ?>
-                    </div>
-                </td>
-                <td class="col-nota"></td>
-                <td class="col-total"></td>
-            </tr>
-            <tr>
-                <td class="col-label bold">JUMLAH BAYARAN</td>
-                <td class="col-box"></td>
-                <td class="col-nota"></td>
-                <td class="col-total">
-                    <div style="border-bottom: 1px solid #000;">
-                        <?php echo number_format($data['total_payments'], 2); ?>
-                    </div>
-                </td>
-            </tr>
-        </table>
+                    </td>
+                    <td class="col-nota"></td>
+                    <td class="col-total"></td>
+                </tr>
+                <tr>
+                    <td class="col-label bold">JUMLAH BAYARAN</td>
+                    <td class="col-box"></td>
+                    <td class="col-nota"></td>
+                    <td class="col-total">
+                        <span class="amount-underline">
+                            <?php echo number_format($data['total_payments'], 2); ?>
+                        </span>
+                    </td>
+                </tr>
 
-        <!-- Surplus/Deficit -->
-        <table class="statement-table">
-            <tr>
-                <td class="col-label">
-                    Lebihan / (Kurangan) (A-B)
-                </td>
-                <td class="col-box"></td>
-                <td class="col-nota"></td>
-                <td class="col-total">
-                    <div style="border-bottom: 1px solid #000;">
-                        <?php echo number_format($data['surplus_deficit'], 2); ?>
-                    </div>
-                </td>
-            </tr>
-        </table>
+                <!-- Surplus/Deficit -->
+                <tr>
+                    <td class="col-label" style="padding-top: 10px;">
+                        Lebihan / (Kurangan) (A-B)
+                    </td>
+                    <td class="col-box"></td>
+                    <td class="col-nota"></td>
+                    <td class="col-total" style="padding-top: 10px;">
+                        <span class="amount-underline-bold">
+                            <?php echo number_format($data['surplus_deficit'], 2); ?>
+                        </span>
+                    </td>
+                </tr>
 
-        <!-- Closing Balance -->
-        <table class="statement-table">
-            <tr>
-                <td class="col-label">
-                    <div class="bold">BAKI PADA <?php echo $displayEndDate; ?></div>
-                    <div class="bold" style="text-decoration: underline; margin-top: 5px;">DIWAKILI OLEH</div>
-                    <div style="margin-left: 10px;">Wang Tunai di tangan</div>
-                    <div style="margin-left: 10px;">Wang Tunai di bank</div>
-                    <div style="margin-left: 10px;">Pelaburan</div>
-                </td>
-                <td class="col-box"></td>
-                <td class="col-nota"></td>
-                <td class="col-total">
-                    <div class="double-line" style="margin-top: 25px;">
-                        <?php echo number_format($data['closing_balance']['cash'] + $data['closing_balance']['bank'], 2); ?>
-                    </div>
-                    
-                    <!-- Breakdown for Closing Balance -->
-                    <div style="margin-top: 20px; border-bottom: 1px solid #000;">
-                        <?php echo number_format($data['closing_balance']['cash'], 2); ?>
-                    </div>
-                    <div style="border-bottom: 1px solid #000;">
-                        <?php echo number_format($data['closing_balance']['bank'], 2); ?>
-                    </div>
-                    <div style="border-bottom: 1px solid #000;">
-                        0.00
-                    </div>
-                    <div class="double-line">
-                        -
-                    </div>
-                </td>
-            </tr>
+                <!-- Closing Balance -->
+                <tr>
+                    <td colspan="3" style="padding-top: 15px;">
+                        <div class="bold">BAKI PADA <?php echo $displayEndDate; ?></div>
+                    </td>
+                    <td class="col-total" style="padding-top: 15px;">
+                        <span class="amount-double">
+                            <?php echo number_format($data['closing_balance']['cash'] + $data['closing_balance']['bank'], 2); ?>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div class="bold" style="text-decoration: underline; margin-top: 5px;">DIWAKILI OLEH</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-label">
+                        <div style="padding-top: 10px;">
+                            <div class="row-item">Wang Tunai di tangan</div>
+                            <div class="row-item">Wang Tunai di bank</div>
+                            <div class="row-item">Pelaburan</div>
+                        </div>
+                    </td>
+                    <td class="col-box">
+                        <div class="box-container">
+                            <div class="row-item text-right"><?php echo number_format($data['closing_balance']['cash'], 2); ?></div>
+                            <div class="row-item text-right"><?php echo number_format($data['closing_balance']['bank'], 2); ?></div>
+                            <div class="row-item text-right">0.00</div>
+                        </div>
+                    </td>
+                    <td class="col-nota"></td>
+                    <td class="col-total">
+                        <div style="padding-top: 10px;">
+                            <div class="row-item"></div>
+                            <div class="row-item"></div>
+                            <div class="row-item">
+                                <span class="amount-underline">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 2px; text-align: right;">
+                            <span class="amount-double-custom">
+                                <?php echo number_format($data['closing_balance']['cash'] + $data['closing_balance']['bank'], 2); ?>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
         </table>
 
         <!-- Signatures -->
@@ -293,9 +342,7 @@ $periodString = "{$displayStartDate} HINGGA {$displayEndDate}";
             </div>
         </div>
 
-        <div style="position: absolute; bottom: 15mm; left: 15mm;">
-            56
-        </div>
+
     </div>
 
     <script>
