@@ -110,8 +110,13 @@
                 </label>
 
                 <label>
-                    Monthly Income (RM)
-                    <input type="number" name="income" step="0.01" min="0" placeholder="0.00">
+                    Monthly Income Range
+                    <select name="income_range">
+                        <option value="">Select Income Range</option>
+                        <option value="below_5250">Below RM5,250</option>
+                        <option value="between_5250_11820">RM5,250 - RM11,820</option>
+                        <option value="above_11820">Above RM11,820</option>
+                    </select>
                 </label>
                 
                 <div class="form-row">
