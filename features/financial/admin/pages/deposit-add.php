@@ -39,7 +39,9 @@ $pageHeader = [
         ['label' => 'Akaun Terimaan', 'url' => url('financial/deposit-account')],
         ['label' => 'Add', 'url' => null],
     ],
-    'actions' => []
+    'actions' => [
+        ['label' => 'Back', 'icon' => 'fa-arrow-left', 'url' => url('financial/deposit-account'), 'class' => 'btn-secondary'],
+    ]
 ];
 
 // 1. Capture the inner content

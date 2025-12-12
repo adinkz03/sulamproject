@@ -48,8 +48,13 @@ foreach (DepositAccountRepository::CATEGORY_COLUMNS as $col) {
 
 // Payment method display
 $paymentMethodDisplay = 'Tunai';
-if ($deposit['payment_method'] !== 'cash') {
-    $paymentMethodDisplay = 'Bank';
+if ($deposit['payment_method'] === 'cheque') {
+    $paymentMethodDisplay = 'Bank (Cek)';
+    if (!empty($deposit['payment_reference'])) {
+        $paymentMethodDisplay .= ' - No. ' . htmlspecialchars($deposit['payment_reference']);
+    }
+} elseif ($deposit['payment_method'] === 'bank') {
+    $paymentMethodDisplay = 'Bank (E-Banking)';
     if (!empty($deposit['payment_reference'])) {
         $paymentMethodDisplay .= ' - No. ' . htmlspecialchars($deposit['payment_reference']);
     }
@@ -177,11 +182,6 @@ $amountInWords = numberToWords($totalAmount);
         .org-address {
             font-size: 10pt;
             margin-bottom: 15px;
-        }
-
-        .header-line {
-            border-bottom: 2px solid #000;
-            margin-bottom: 20px;
         }
 
         /* Forms / Key-Value Pairs */
@@ -315,8 +315,6 @@ $amountInWords = numberToWords($totalAmount);
                 94300 Kota Samarahan, Sarawak
             </div>
         </div>
-
-        <div class="header-line"></div>
 
         <!-- Info Grid -->
         <div class="info-grid">
