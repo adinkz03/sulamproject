@@ -86,6 +86,40 @@ class PaymentAccountRepository
     }
 
     /**
+     * Generate next voucher number in format MADU/YEAR/COUNT
+     * 
+     * @return string
+     */
+    public function generateVoucherNumber(): string
+    {
+        $year = date('Y');
+        $prefix = "MADU/{$year}/";
+        
+        // Find the highest count for this year
+        $sql = "SELECT voucher_number FROM financial_payment_accounts 
+                WHERE voucher_number LIKE ? 
+                ORDER BY voucher_number DESC 
+                LIMIT 1";
+        
+        $stmt = $this->mysqli->prepare($sql);
+        $pattern = "MADU/{$year}/%";
+        $stmt->bind_param('s', $pattern);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $stmt->close();
+        
+        if ($row && preg_match('/MADU\/\d{4}\/(\d+)/', $row['voucher_number'], $matches)) {
+            $nextCount = intval($matches[1]) + 1;
+        } else {
+            $nextCount = 1;
+        }
+        
+        // Format with leading zeros (4 digits)
+        return $prefix . str_pad($nextCount, 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
      * Create a new payment record
      *
      * @param array $data Associative array with tx_date, description, and category amounts
@@ -93,6 +127,11 @@ class PaymentAccountRepository
      */
     public function create(array $data): int
     {
+        // Auto-generate voucher number if not provided or empty
+        if (empty($data['voucher_number'])) {
+            $data['voucher_number'] = $this->generateVoucherNumber();
+        }
+
         $columns = [
             'tx_date', 
             'description', 
@@ -109,7 +148,7 @@ class PaymentAccountRepository
         $values = [
             $data['tx_date'],
             $data['description'],
-            $data['voucher_number'] ?? null,
+            $data['voucher_number'],
             $data['paid_to'] ?? null,
             $data['payee_ic'] ?? null,
             $data['payee_bank_name'] ?? null,

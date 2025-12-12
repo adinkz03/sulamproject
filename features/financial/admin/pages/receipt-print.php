@@ -311,7 +311,7 @@ $amountInWords = numberToWords($totalAmount);
         <div class="header-section">
             <div class="org-name">JAWATANKUASA MASJID DARUL ULUM</div>
             <div class="org-address">
-                Lorong Desa Ilmu 22,<br>
+                Taman Desa Ilmu,<br>
                 94300 Kota Samarahan, Sarawak
             </div>
         </div>

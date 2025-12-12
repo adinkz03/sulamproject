@@ -83,7 +83,7 @@ $userRole = $isAdmin ? 'Admin' : 'Resident';
       <div class="sidebar-contact-title">Contact Us</div>
       <div class="sidebar-contact-item">
         <i class="fa-solid fa-location-dot"></i>
-        <span>Lorong Desa Ilmu 22<br>94300 Kota Samarahan, Sarawak</span>
+        <span>Taman Desa Ilmu<br>94300 Kota Samarahan, Sarawak</span>
       </div>
       <div class="sidebar-contact-item">
         <i class="fa-solid fa-envelope"></i>

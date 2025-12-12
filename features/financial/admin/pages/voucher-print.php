@@ -163,10 +163,8 @@ $amountInWords = numberToWords($totalAmount);
         .org-name {
             font-size: 11pt;
             font-style: italic;
-            border-bottom: 1px solid #000;
             display: inline-block;
             min-width: 80%;
-            padding-bottom: 2px;
             margin-bottom: 5px;
             text-transform: uppercase;
         }
@@ -180,10 +178,8 @@ $amountInWords = numberToWords($totalAmount);
         .org-address {
             font-size: 10pt;
             font-style: italic;
-            border-bottom: 1px solid #000;
             display: inline-block;
             min-width: 80%;
-            padding-bottom: 2px;
             margin-bottom: 5px;
         }
 
@@ -355,7 +351,7 @@ $amountInWords = numberToWords($totalAmount);
             
             <div class="org-name">JAWATANKUASA PENGURUSAN MASJID DARUL ULUM</div>
             
-            <div class="org-address">LORONG DESA ILMU 22, 94300 KOTA SAMARAHAN, SARAWAK</div>
+            <div class="org-address">TAMAN DESA ILMU, 94300 KOTA SAMARAHAN, SARAWAK</div>
         </div>
 
         <!-- Info Grid -->
@@ -390,6 +386,10 @@ $amountInWords = numberToWords($totalAmount);
                     <div class="field-label" style="width: 100px;">TARIKH</div>
                     <div class="field-input"><?php echo $formattedDate; ?></div>
                 </div>
+                <div class="field-row">
+                    <div class="field-label" style="width: 100px;">NO. RUJUKAN</div>
+                    <div class="field-input"><?php echo e($payment['payment_reference'] ?? ''); ?></div>
+                </div>
                 <div class="field-row" style="align-items: flex-start;">
                     <div class="field-label" style="width: 100px; margin-top: 5px;">KAEDAH PEMBAYARAN</div>
                     <div class="checkbox-group">
@@ -398,7 +398,11 @@ $amountInWords = numberToWords($totalAmount);
                             TUNAI
                         </div>
                         <div class="checkbox-item">
-                            <div class="checkbox-box"><?php echo ($payment['payment_method'] !== 'cash') ? '✓' : ''; ?></div>
+                            <div class="checkbox-box"><?php echo ($payment['payment_method'] === 'cheque') ? '✓' : ''; ?></div>
+                            CEK
+                        </div>
+                        <div class="checkbox-item">
+                            <div class="checkbox-box"><?php echo ($payment['payment_method'] === 'bank') ? '✓' : ''; ?></div>
                             E-BANKING
                         </div>
                     </div>

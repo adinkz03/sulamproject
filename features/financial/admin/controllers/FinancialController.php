@@ -235,11 +235,15 @@ class FinancialController {
      * Show add payment form
      */
     public function addPayment(): array {
+        // Generate the next voucher number for preview
+        $nextVoucherNumber = $this->paymentRepo->generateVoucherNumber();
+        
         return [
             'title' => 'Add Payment',
             'record' => null,
             'categoryColumns' => PaymentAccountRepository::CATEGORY_COLUMNS,
             'categoryLabels' => PaymentAccountRepository::CATEGORY_LABELS,
+            'nextVoucherNumber' => $nextVoucherNumber,
             'errors' => [],
             'old' => [],
         ];

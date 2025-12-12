@@ -39,7 +39,14 @@ $pageHeader = [
         ['label' => 'Akaun Bayaran', 'url' => url('financial/payment-account')],
         ['label' => 'Add', 'url' => null],
     ],
-    'actions' => []
+    'actions' => [
+        [
+            'label' => 'Back',
+            'url' => url('financial/payment-account'),
+            'icon' => 'fa-arrow-left',
+            'class' => 'btn-secondary'
+        ]
+    ]
 ];
 
 // 1. Capture the inner content

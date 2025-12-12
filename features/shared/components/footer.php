@@ -32,7 +32,7 @@
         <ul class="footer-contact">
           <li>
             <i class="fa-solid fa-location-dot"></i>
-            <span>Lorong Desa Ilmu 22<br>94300 Kota Samarahan, Sarawak</span>
+            <span>Taman Desa Ilmu<br>94300 Kota Samarahan, Sarawak</span>
           </li>
           <li>
             <i class="fa-solid fa-envelope"></i>

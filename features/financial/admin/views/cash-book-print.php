@@ -120,7 +120,7 @@ $titleDate = $month ? "$monthName $fiscalYear" : "$fiscalYear";
         </div>
         <br>
         <div class="org-info" style="border-bottom: 1px solid black;">
-            (Lorong Desa Ilmu 22, 94300 Kota Samarahan, Sarawak)
+            (Taman Desa Ilmu, 94300 Kota Samarahan, Sarawak)
         </div>
     </div>
 

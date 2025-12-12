@@ -126,7 +126,7 @@ $periodString = "{$displayStartDate} HINGGA {$displayEndDate}";
             </div>
             
             <div class="header-line">
-                (LORONG DESA ILMU 22, 94300 KOTA SAMARAHAN, SARAWAK)
+                (TAMAN DESA ILMU, 94300 KOTA SAMARAHAN, SARAWAK)
             </div>
 
             <div style="margin-top: 20px;">
