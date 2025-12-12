@@ -108,49 +108,7 @@
     border-left-color: #10b981;
 }
 
-.death-page .btn-primary,
-.death-page .btn-secondary {
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
-    font-size: 0.95rem;
-}
-
-.death-page .btn-primary {
-    background-color: #3b82f6;
-    color: white;
-}
-
-.death-page .btn-primary:hover {
-    background-color: #2563eb;
-}
-
-.death-page .btn-secondary {
-    background-color: #6b7280;
-    color: white;
-}
-
-.death-page .btn-secondary:hover {
-    background-color: #4b5563;
-}
-
-.death-page .btn-small {
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.875rem;
-    transition: background-color 0.2s;
-}
-
-.death-page .btn-small:hover {
-    background-color: #2563eb;
-}
+/* Removed conflicting button styles to use shared buttons.css */
 
 .death-page .stats-grid {
     display: grid;

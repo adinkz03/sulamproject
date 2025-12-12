@@ -31,8 +31,8 @@
             <label class="form-label">Next of Kin (Phone)</label>
             <input name="nok_phone" class="form-control" placeholder="e.g., 01234567890" />
         </div>
-        <div class="form-group full-width">
-            <button class="btn btn-primary" type="submit">Submit Notification</button>
+        <div class="form-group full-width actions" style="text-align: right;">
+            <button class="btn-primary" type="submit">Submit Notification</button>
         </div>
     </form>
 </div>

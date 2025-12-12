@@ -77,7 +77,7 @@ $content = ob_get_clean();
 
 $pageTitle = 'Death & Funeral';
 $additionalStyles = [
-    url('features/death-funeral/admin/assets/css/admin-death-funeral.css')
+    url('features/death-funeral/admin/assets/css/admin-death-funeral.css?v=' . time())
 ];
 $additionalScripts = [
     url('features/death-funeral/admin/assets/js/admin-death-funeral.js')

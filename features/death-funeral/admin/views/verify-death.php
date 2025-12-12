@@ -41,7 +41,7 @@
                             </td>
                             <td>
                                 <?php if (!$item->verified): ?>
-                                    <button class="btn btn-sm btn-primary" onclick="verifyNotification(<?php echo $item->id; ?>)">Verify</button>
+                                    <button class="btn-primary btn-sm" onclick="verifyNotification(<?php echo $item->id; ?>)">Verify</button>
                                 <?php endif; ?>
                             </td>
                         </tr>

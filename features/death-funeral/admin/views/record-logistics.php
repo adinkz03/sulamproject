@@ -36,8 +36,8 @@
             <textarea name="notes" id="notes" rows="4" class="form-control"></textarea>
         </div>
 
-        <div class="form-group full-width">
-            <button class="btn btn-primary" type="submit">Save Logistics</button>
+        <div class="form-group full-width actions" style="text-align: right;">
+            <button class="btn-primary" type="submit">Save Logistics</button>
         </div>
     </form>
 </div>
