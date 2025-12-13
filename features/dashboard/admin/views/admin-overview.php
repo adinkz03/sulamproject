@@ -101,7 +101,7 @@
     
     <div class="bento-grid">
         <!-- Add Deposit (Financial) -->
-        <a href="<?php echo url('financial/deposit-add'); ?>" class="bento-card bento-1x1 nav-card hover-lift">
+        <a href="<?php echo url('financial/deposit-account/add'); ?>" class="bento-card bento-1x1 nav-card hover-lift">
             <div class="nav-icon-wrapper">
                 <i class="fa-solid fa-plus nav-icon"></i>
             </div>
@@ -112,7 +112,7 @@
         </a>
 
         <!-- Add Payment (Financial) -->
-        <a href="<?php echo url('financial/payment-add'); ?>" class="bento-card bento-1x1 nav-card hover-lift">
+        <a href="<?php echo url('financial/payment-account/add'); ?>" class="bento-card bento-1x1 nav-card hover-lift">
             <div class="nav-icon-wrapper">
                 <i class="fa-solid fa-file-invoice-dollar nav-icon"></i>
             </div>

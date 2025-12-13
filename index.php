@@ -4,6 +4,11 @@
  * Central entry point for all requests
  */
 
+// Load configuration if it exists
+if (file_exists(__DIR__ . '/config.php')) {
+    require_once __DIR__ . '/config.php';
+}
+
 // Load router and routes (moved under features)
 // Define base path (empty for root, or '/subfolder' if in a subfolder)
 // Auto-detect base path

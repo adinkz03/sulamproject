@@ -23,7 +23,7 @@ $pageHeader = [
         ['label' => 'Users', 'url' => null],
     ],
     'actions' => [
-        ['label' => 'Add User', 'icon' => 'fa-user-plus', 'url' => url('features/users/shared/pages/register.php'), 'class' => 'btn-primary'],
+        ['label' => 'Add User', 'icon' => 'fa-user-plus', 'url' => url('users/add'), 'class' => 'btn-primary'],
     ]
 ];
 

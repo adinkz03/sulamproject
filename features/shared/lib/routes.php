@@ -348,11 +348,26 @@ $router->get('/waris', function() use ($ROOT) {
     require $ROOT . '/features/users/waris/pages/waris.php';
 });
 
+
 $router->get('/admin', function() use ($ROOT) {
     initSecureSession();
     requireAuth();
     requireAdmin();
     require $ROOT . '/features/users/admin/pages/admin.php';
+});
+
+$router->get('/users/add', function() use ($ROOT) {
+    initSecureSession();
+    requireAuth();
+    requireAdmin();
+    require $ROOT . '/features/users/admin/pages/user-add.php';
+});
+
+$router->post('/users/add', function() use ($ROOT) {
+    initSecureSession();
+    requireAuth();
+    requireAdmin();
+    require $ROOT . '/features/users/admin/pages/user-add.php';
 });
 
 $router->get('/admin/user-edit', function() use ($ROOT) {

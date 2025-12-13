@@ -9,10 +9,15 @@ class Database {
     private $pdo;
     
     private function __construct() {
-        $host = getenv('DB_HOST') ?: 'localhost';
-        $dbname = getenv('DB_NAME') ?: 'masjidkamek';
-        $username = getenv('DB_USER') ?: 'root';
-        $password = getenv('DB_PASS') ?: '';
+        $configFile = dirname(__DIR__, 4) . '/config.php';
+        if (file_exists($configFile)) {
+            require_once $configFile;
+        }
+
+        $host = defined('DB_HOST') ? DB_HOST : (getenv('DB_HOST') ?: 'localhost');
+        $dbname = defined('DB_NAME') ? DB_NAME : (getenv('DB_NAME') ?: 'masjidkamek');
+        $username = defined('DB_USER') ? DB_USER : (getenv('DB_USER') ?: 'root');
+        $password = defined('DB_PASS') ? DB_PASS : (getenv('DB_PASS') ?: '');
         $charset = 'utf8mb4';
         
         $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
