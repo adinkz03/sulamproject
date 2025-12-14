@@ -31,7 +31,9 @@ if ($isAdmin && $_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Fetch Data
-$events = $controller->getAllEvents();
+$search = $_GET['search'] ?? '';
+$status = $_GET['status'] ?? '';
+$events = $controller->getAllEvents($search, $status);
 
 // Define page header
 $pageHeader = [
@@ -119,16 +121,43 @@ $splitLayoutLeft = ob_get_clean();
 /* --- RIGHT COLUMN: Existing Events List --- */
 ob_start();
 ?>
-  <div class="section-header" style="margin-top: 0;">
+  <div class="section-header" style="margin-top: 0; flex-direction: column; align-items: flex-start; gap: 1rem;">
     <h3 class="section-title">Existing Events</h3>
+    
+    <!-- Filter Card (Financial Style) -->
+    <div class="card card--filter" style="width: 100%; margin-bottom: 1rem;">
+        <div class="filter-header" onclick="document.getElementById('eventsFilterContent').style.display = document.getElementById('eventsFilterContent').style.display === 'none' ? 'block' : 'none'" style="cursor: pointer;">
+            <div class="filter-icon"><i class="fas fa-filter"></i></div>
+            <h4 class="filter-title" style="flex: 1;">Filter Events</h4>
+            <i class="fas fa-chevron-down" style="color: #94a3b8;"></i>
+        </div>
+        
+        <div id="eventsFilterContent" style="padding: 1rem;">
+            <form id="eventsFilterForm" method="get" style="display: grid; grid-template-columns: 1fr auto; gap: 1rem;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #64748b; margin-bottom: 0.5rem;">Search</label>
+                    <input type="text" name="search" placeholder="Search title, location..." value="<?php echo htmlspecialchars($search); ?>" class="form-input" style="width: 100%;">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #64748b; margin-bottom: 0.5rem;">Status</label>
+                    <select name="status" class="form-input" style="width: 100%;">
+                        <option value="">All Status</option>
+                        <option value="1" <?php echo $status === '1' ? 'selected' : ''; ?>>Active</option>
+                        <option value="0" <?php echo $status === '0' ? 'selected' : ''; ?>>Inactive</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
   </div>
 
+  <div id="eventsListContainer">
   <?php if (empty($events)): ?>
     <div class="empty-state">
-        <p>No events have been created yet.</p>
+        <p>No events found matching your criteria.</p>
     </div>
   <?php else: ?>
-        <div class="events-grid" style="grid-template-columns: 1fr;"> <!-- Force single column in split view -->
+        <div class="events-grid" style="grid-template-columns: 1fr; max-height: 75vh; overflow-y: auto; padding-right: 0.5rem;"> <!-- Force single column in split view -->
       <?php foreach ($events as $e): ?>
         <div class="event-card">
           <div class="event-image-container">
@@ -244,6 +273,7 @@ ob_start();
       <?php endforeach; ?>
     </div>
   <?php endif; ?>
+  </div>
 <?php
 $splitLayoutRight = ob_get_clean();
 
@@ -261,6 +291,7 @@ $content = ob_get_clean();
 $pageTitle = 'Events';
 $additionalStyles = [
     url('features/shared/assets/css/split-content-layout.css'),
+    url('features/shared/assets/css/cards.css'),
     url('features/events/admin/assets/events-admin.css')
 ];
 include $ROOT . '/features/shared/components/layouts/base.php';
@@ -271,4 +302,52 @@ function toggleEditForm(id){
     if(!f) return;
     f.style.display = (f.style.display === 'none' || f.style.display === '') ? 'block' : 'none';
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('eventsFilterForm');
+    if (!form) return;
+    
+    const inputs = form.querySelectorAll('input, select');
+    let timeout = null;
+
+    function fetchResults() {
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+        const url = window.location.pathname + '?' + params.toString();
+        
+        const container = document.getElementById('eventsListContainer');
+        if (container) container.style.opacity = '0.5';
+        
+        fetch(url)
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newContainer = doc.getElementById('eventsListContainer');
+            
+            if (newContainer && container) {
+                container.innerHTML = newContainer.innerHTML;
+            }
+            if (container) container.style.opacity = '1';
+            
+            // Update URL
+            window.history.pushState({}, '', url);
+        })
+        .catch(err => {
+            console.error('Filter error:', err);
+            if (container) container.style.opacity = '1';
+        });
+    }
+
+    inputs.forEach(input => {
+        if (input.tagName === 'SELECT') {
+            input.addEventListener('change', fetchResults);
+        } else {
+            input.addEventListener('input', () => {
+                clearTimeout(timeout);
+                timeout = setTimeout(fetchResults, 300);
+            });
+        }
+    });
+});
 </script>

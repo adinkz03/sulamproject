@@ -56,14 +56,40 @@ class EventsController {
         return ['message' => $message, 'messageClass' => $messageClass];
     }
 
-    public function getAllEvents() {
+    public function getAllEvents($search = '', $status = '') {
         $items = [];
-        $res = $this->mysqli->query('SELECT id, title, description, event_date, event_time, location, image_path, is_active, created_at FROM events ORDER BY event_date DESC, id DESC');
-        if ($res) { 
+        $sql = "SELECT id, title, description, event_date, event_time, location, image_path, is_active, created_at FROM events WHERE 1=1";
+        $params = [];
+        $types = "";
+
+        if (!empty($search)) {
+            $sql .= " AND (title LIKE ? OR description LIKE ? OR location LIKE ?)";
+            $searchTerm = "%$search%";
+            $params[] = $searchTerm;
+            $params[] = $searchTerm;
+            $params[] = $searchTerm;
+            $types .= "sss";
+        }
+
+        if ($status !== '') {
+            $sql .= " AND is_active = ?";
+            $params[] = (int)$status;
+            $types .= "i";
+        }
+
+        $sql .= " ORDER BY event_date DESC, id DESC";
+
+        $stmt = $this->mysqli->prepare($sql);
+        if ($stmt) {
+            if (!empty($params)) {
+                $stmt->bind_param($types, ...$params);
+            }
+            $stmt->execute();
+            $res = $stmt->get_result();
             while ($row = $res->fetch_assoc()) { 
                 $items[] = $row; 
             } 
-            $res->close(); 
+            $stmt->close(); 
         }
         return $items;
     }

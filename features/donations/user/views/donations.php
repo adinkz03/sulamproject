@@ -6,11 +6,38 @@
     </div>
 <?php endif; ?>
 
-<?php if (isset($donations) && count($donations) > 0): ?>
+<?php if (isset($donations)): ?>
     <div class="card page-card">
         <div class="card card--elevated" style="margin-top: 2rem;">
-            <h3>Donations</h3>
-            <p>Click to view the detail.</p>
+            <div style="margin-bottom: 1.5rem;">
+                <h3>Donations</h3>
+                <p>Click to view the detail.</p>
+            </div>
+
+            <!-- Filter Card (Financial Style) -->
+            <div class="card card--filter" style="width: 100%; margin-bottom: 1.5rem;">
+                <div class="filter-header" onclick="document.getElementById('userDonationsFilterContent').style.display = document.getElementById('userDonationsFilterContent').style.display === 'none' ? 'block' : 'none'" style="cursor: pointer;">
+                    <div class="filter-icon"><i class="fas fa-filter"></i></div>
+                    <h4 class="filter-title" style="flex: 1;">Filter Donations</h4>
+                    <i class="fas fa-chevron-down" style="color: #94a3b8;"></i>
+                </div>
+                
+                <div id="userDonationsFilterContent" style="padding: 1rem;">
+                    <form id="userDonationsFilterForm" method="get" style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #64748b; margin-bottom: 0.5rem;">Search</label>
+                            <input type="text" name="search" placeholder="Search title, description..." value="<?php echo htmlspecialchars($search ?? ''); ?>" class="form-input" style="width: 100%;">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div id="donationsListContainer">
+            <?php if (empty($donations)): ?>
+                <div class="empty-state" style="text-align: center; padding: 2rem; color: #666;">
+                    <p>No donations found matching your criteria.</p>
+                </div>
+            <?php else: ?>
             <div class="card-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem;">
                 <?php foreach ($donations as $d): ?>
                     <div class="card card--elevated donation-card"
@@ -32,6 +59,8 @@
                         </div>
                     </div>
                 <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
             </div>
         </div>
     </div>
@@ -81,14 +110,16 @@
             document.body.style.overflow = '';
         }
 
-        document.querySelectorAll('.donation-card').forEach(function(card){
-            card.addEventListener('click', function(){
+        // Use event delegation for dynamic content
+        document.addEventListener('click', function(e) {
+            const card = e.target.closest('.donation-card');
+            if (card) {
                 openModal({
                     title: card.getAttribute('data-title'),
                     description: card.getAttribute('data-description'),
                     image: card.getAttribute('data-image')
                 });
-            });
+            }
         });
 
         mClose.addEventListener('click', closeModal);
@@ -98,6 +129,49 @@
         document.addEventListener('keydown', function(e){
             if (e.key === 'Escape') closeModal();
         });
+
+        // Dynamic Filter Script
+        const form = document.getElementById('userDonationsFilterForm');
+        if (form) {
+            const inputs = form.querySelectorAll('input');
+            let timeout = null;
+
+            function fetchResults() {
+                const formData = new FormData(form);
+                const params = new URLSearchParams(formData);
+                const url = window.location.pathname + '?' + params.toString();
+                
+                const container = document.getElementById('donationsListContainer');
+                if (container) container.style.opacity = '0.5';
+                
+                fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newContainer = doc.getElementById('donationsListContainer');
+                    
+                    if (newContainer && container) {
+                        container.innerHTML = newContainer.innerHTML;
+                    }
+                    if (container) container.style.opacity = '1';
+                    
+                    // Update URL
+                    window.history.pushState({}, '', url);
+                })
+                .catch(err => {
+                    console.error('Filter error:', err);
+                    if (container) container.style.opacity = '1';
+                });
+            }
+
+            inputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(fetchResults, 300);
+                });
+            });
+        }
     })();
     </script>
 <?php else: ?>

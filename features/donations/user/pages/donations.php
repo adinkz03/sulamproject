@@ -19,9 +19,28 @@ $pageHeader = [
 // Fetch active donations uploaded by admin
 require_once $ROOT . '/features/shared/lib/database/mysqli-db.php';
 $donations = [];
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
 try {
-    $stmt = $mysqli->prepare('SELECT id, title, description, image_path FROM donations WHERE is_active = 1 ORDER BY id DESC');
+    $query = "SELECT id, title, description, image_path FROM donations WHERE is_active = 1";
+    $params = [];
+    $types = "";
+
+    if (!empty($search)) {
+        $query .= " AND (title LIKE ? OR description LIKE ?)";
+        $searchTerm = "%$search%";
+        $params[] = $searchTerm;
+        $params[] = $searchTerm;
+        $types .= "ss";
+    }
+
+    $query .= " ORDER BY id DESC";
+
+    $stmt = $mysqli->prepare($query);
     if ($stmt) {
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
+        }
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -46,4 +65,7 @@ $content = ob_get_clean();
 
 // 3. Set page title and include base layout
 $pageTitle = "Donations";
+$additionalStyles = [
+    url('features/shared/assets/css/cards.css')
+];
 include $ROOT . '/features/shared/components/layouts/base.php';

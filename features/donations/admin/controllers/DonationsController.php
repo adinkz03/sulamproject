@@ -53,14 +53,39 @@ class DonationsController {
         return ['message' => $message, 'messageClass' => $messageClass];
     }
 
-    public function getAllDonations() {
+    public function getAllDonations($search = '', $status = '') {
         $items = [];
-        $res = $this->mysqli->query('SELECT id, title, description, image_path, is_active, created_at FROM donations ORDER BY id DESC');
-        if ($res) { 
-            while ($row = $res->fetch_assoc()) { 
-                $items[] = $row; 
-            } 
-            $res->close(); 
+        $query = "SELECT id, title, description, image_path, is_active, created_at FROM donations WHERE 1=1";
+        $params = [];
+        $types = "";
+
+        if (!empty($search)) {
+            $query .= " AND (title LIKE ? OR description LIKE ?)";
+            $searchTerm = "%$search%";
+            $params[] = $searchTerm;
+            $params[] = $searchTerm;
+            $types .= "ss";
+        }
+
+        if ($status !== '') {
+            $query .= " AND is_active = ?";
+            $params[] = (int)$status;
+            $types .= "i";
+        }
+
+        $query .= " ORDER BY id DESC";
+
+        $stmt = $this->mysqli->prepare($query);
+        if ($stmt) {
+            if (!empty($params)) {
+                $stmt->bind_param($types, ...$params);
+            }
+            $stmt->execute();
+            $res = $stmt->get_result();
+            while ($row = $res->fetch_assoc()) {
+                $items[] = $row;
+            }
+            $stmt->close();
         }
         return $items;
     }

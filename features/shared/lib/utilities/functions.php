@@ -4,6 +4,39 @@
  * General-purpose helper functions
  */
 
+if (!defined('APP_BASE_PATH')) {
+    // Auto-detect base path if not defined (e.g. when accessing files directly)
+    $scriptName = $_SERVER['SCRIPT_NAME'];
+    $dir = dirname($scriptName);
+    
+    // Walk up directories until we find the root (where index.php or config.php usually is)
+    // This is a heuristic. A better way is to rely on a known relative path.
+    // Since we know this file is in features/shared/lib/utilities/, we can calculate the root.
+    // But $scriptName is the executed script (e.g. /sulamproject/features/events/admin/pages/events.php).
+    
+    // Simple fallback: assume the project root is the first directory after localhost if strictly structured,
+    // or just use the relative path logic if we know the depth.
+    
+    // Better approach for this project structure:
+    // If we are in /sulamproject/features/..., the base is /sulamproject
+    
+    // Let's try to find 'sulamproject' or just use the relative path from document root.
+    // Actually, the index.php logic was:
+    // $dir = dirname($scriptName);
+    // define('APP_BASE_PATH', $dir === '/' || $dir === '\\' ? '' : $dir);
+    
+    // But for deep files, dirname($scriptName) is /sulamproject/features/events/admin/pages.
+    // We want /sulamproject.
+    
+    // Let's use the $ROOT variable if available, or calculate it.
+    // The $ROOT in the calling script is usually dirname(__DIR__, 4).
+    // We can't easily get the web path from the file path without knowing the Document Root.
+    
+    // Standard way:
+    $relativePath = str_replace($_SERVER['DOCUMENT_ROOT'], '', str_replace('\\', '/', dirname(__DIR__, 4)));
+    define('APP_BASE_PATH', $relativePath === '/' ? '' : $relativePath);
+}
+
 function e($string) {
     return htmlspecialchars($string ?? '', ENT_QUOTES, 'UTF-8');
 }
