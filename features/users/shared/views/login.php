@@ -111,6 +111,9 @@ $carouselJson = json_encode(
 
         <!-- Login Form -->
         <div id="login-form" style="<?php echo ($initialView === 'login') ? '' : 'display: none;'; ?>">
+            <div class="login-logo">
+                <img src="<?php echo url('assets/uploads/masjid_logo.jpg'); ?>" alt="Masjid Logo">
+            </div>
             <h2>Login</h2>
             <form method="post" action="<?php echo url('login'); ?>">
                 <?php echo csrfField(); ?>
@@ -148,6 +151,9 @@ $carouselJson = json_encode(
 
         <!-- Register Form -->
         <div id="register-form" style="<?php echo ($initialView === 'register') ? '' : 'display: none;'; ?>">
+            <div class="login-logo">
+                <img src="<?php echo url('assets/uploads/masjid_logo.jpg'); ?>" alt="Masjid Logo">
+            </div>
             <h2>Register</h2>
             <form method="post" action="<?php echo url('register'); ?>">
                 <?php echo csrfField(); ?>
