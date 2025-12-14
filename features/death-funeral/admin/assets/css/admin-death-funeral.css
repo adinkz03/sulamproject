@@ -33,6 +33,20 @@
     gap: 1rem;
 }
 
+/* Two-column helper used by forms to align pairs of fields */
+.death-page .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Ensure grid-2 stacks on small screens */
+@media (max-width: 768px) {
+    .death-page .grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
 .death-page .form-group.full-width {
     grid-column: 1 / -1;
 }
@@ -66,10 +80,46 @@
     padding: 0.75rem;
     text-align: left;
     font-weight: 600;
+    font-size: 0.85rem;
+    white-space: normal;
 }
 
 .death-page table td {
-    padding: 0.75rem;
+    padding: 0.6rem 0.5rem;
+    font-size: 0.85rem;
+    white-space: normal;
+    word-break: break-word;
+    max-width: 120px;
+}
+
+.death-page table td:nth-child(1),
+.death-page table th:nth-child(1) {
+    max-width: 140px;
+}
+
+.death-page table td:nth-child(7),
+.death-page table th:nth-child(7) {
+    max-width: 180px;
+    padding: 0.5rem 0.25rem;
+}
+
+.death-page .table__cell--actions {
+    white-space: normal;
+    word-break: break-word;
+}
+
+.death-page .table__cell--actions .actions {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.death-page .table__cell--actions .btn-sm {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
 }
 
 .death-page .section-header {
@@ -161,5 +211,21 @@
     .death-page table th,
     .death-page table td {
         padding: 0.5rem;
+    }
+
+    /* Allow action buttons to wrap and avoid forcing horizontal scroll */
+    .death-page .table__cell--actions {
+        white-space: normal;
+    }
+
+    .death-page .table__cell--actions .actions {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .death-page .table__cell--actions .actions .btn-sm {
+        padding: 0.35rem 0.6rem;
     }
 }

@@ -17,13 +17,15 @@
             </select>
         </div>
 
-        <div class="form-group">
-            <label class="form-label" for="burial_date">Burial Date</label>
-            <input type="date" name="burial_date" id="burial_date" class="form-control">
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="grave_number">Grave Number</label>
-            <input type="text" name="grave_number" id="grave_number" class="form-control">
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label" for="burial_date">Burial Date</label>
+                <input type="date" name="burial_date" id="burial_date" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="grave_number">Grave Number</label>
+                <input type="text" name="grave_number" id="grave_number" class="form-control">
+            </div>
         </div>
 
         <div class="form-group full-width">
@@ -36,8 +38,8 @@
             <textarea name="notes" id="notes" rows="4" class="form-control"></textarea>
         </div>
 
-        <div class="form-group full-width actions" style="text-align: right;">
-            <button class="btn-primary" type="submit">Save Logistics</button>
+        <div class="form-group full-width">
+            <button class="btn btn-primary" type="submit">Save Logistics</button>
         </div>
     </form>
 </div>

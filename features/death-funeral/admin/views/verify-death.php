@@ -39,10 +39,13 @@
                                     <span class="badge badge-warning">Pending</span>
                                 <?php endif; ?>
                             </td>
-                            <td>
-                                <?php if (!$item->verified): ?>
-                                    <button class="btn-primary btn-sm" onclick="verifyNotification(<?php echo $item->id; ?>)">Verify</button>
-                                <?php endif; ?>
+                            <td class="table__cell--actions">
+                                <div class="actions">
+                                    <?php if (!$item->verified): ?>
+                                        <button class="btn btn-primary btn-sm" onclick="verifyNotification(<?php echo $item->id; ?>)">Verify</button>
+                                    <?php endif; ?>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteNotification(<?php echo $item->id; ?>)">Delete</button>
+                                </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>

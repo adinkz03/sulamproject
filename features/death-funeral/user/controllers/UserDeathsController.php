@@ -10,11 +10,14 @@ class UserDeathsController {
     private $mysqli;
     private $rootPath;
     private $userId;
+    private $model;
 
     public function __construct($mysqli, $rootPath, $userId = null) {
         $this->mysqli = $mysqli;
         $this->rootPath = rtrim($rootPath, '/');
         $this->userId = $userId ?? ($_SESSION['user_id'] ?? null);
+        require_once $rootPath . '/features/death-funeral/user/lib/UserDeathsModel.php';
+        $this->model = new UserDeathsModel($mysqli);
     }
 
     /**
@@ -36,79 +39,63 @@ class UserDeathsController {
             if (empty($deceased_name) || empty($date_of_death)) {
                 $message = 'Deceased name and date of death are required.';
                 $messageClass = 'notice error';
+                return ['message' => $message, 'messageClass' => $messageClass, 'success' => false];
             } else {
-                $stmt = $this->mysqli->prepare('INSERT INTO death_notifications (deceased_name, ic_number, date_of_death, place_of_death, cause_of_death, next_of_kin_name, next_of_kin_phone, reported_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-                
-                if (!$stmt) {
-                    $message = 'Database error: ' . $this->mysqli->error;
-                    $messageClass = 'notice error';
+                $data = [
+                    'deceased_name' => $deceased_name,
+                    'ic_number' => $ic_number,
+                    'date_of_death' => $date_of_death,
+                    'place_of_death' => $place_of_death,
+                    'cause_of_death' => $cause_of_death,
+                    'next_of_kin_name' => $next_of_kin_name,
+                    'next_of_kin_phone' => $next_of_kin_phone,
+                    'reported_by' => $this->userId
+                ];
+
+                $result = $this->model->create($data);
+
+                if ($result) {
+                    $message = 'Death notification submitted successfully. Admin will verify details.';
+                    $messageClass = 'notice success';
+                    return ['message' => $message, 'messageClass' => $messageClass, 'success' => true];
                 } else {
-                    $stmt->bind_param('sssssssi', $deceased_name, $ic_number, $date_of_death, $place_of_death, $cause_of_death, $next_of_kin_name, $next_of_kin_phone, $this->userId);
-                    
-                    if ($stmt->execute()) {
-                        $message = 'Death notification submitted successfully. Admin will verify details.';
+                    // Check if this was a recent duplicate; if so, treat as success without inserting again
+                    $dupId = $this->model->findRecentDuplicateId($data, 10);
+                    if ($dupId) {
+                        $message = 'Duplicate notification detected — already submitted.';
                         $messageClass = 'notice success';
-                    } else {
-                        $message = 'Error submitting notification: ' . $stmt->error;
-                        $messageClass = 'notice error';
+                        return ['message' => $message, 'messageClass' => $messageClass, 'success' => true];
                     }
-                    $stmt->close();
+
+                    $message = 'Error submitting notification. Please try again.';
+                    $messageClass = 'notice error';
+                    return ['message' => $message, 'messageClass' => $messageClass, 'success' => false];
                 }
             }
         }
 
-        return ['message' => $message, 'messageClass' => $messageClass];
+        return ['message' => $message, 'messageClass' => $messageClass, 'success' => false];
     }
 
     /**
      * Get notifications reported by current user
      */
     public function getUserNotifications() {
-        $items = [];
-        $stmt = $this->mysqli->prepare('SELECT * FROM death_notifications WHERE reported_by = ? ORDER BY created_at DESC');
-        
-        if ($stmt) {
-            $stmt->bind_param('i', $this->userId);
-            $stmt->execute();
-            $res = $stmt->get_result();
-            
-            while ($row = $res->fetch_assoc()) {
-                $items[] = new DeathNotification($row);
-            }
-            $stmt->close();
-        }
-        
-        return $items;
-    }
-
-    /**
-     * Get single notification
-     */
-    public function getNotification($id) {
-        $stmt = $this->mysqli->prepare('SELECT * FROM death_notifications WHERE id = ? AND reported_by = ?');
-        
-        if ($stmt) {
-            $stmt->bind_param('ii', $id, $this->userId);
-            $stmt->execute();
-            $res = $stmt->get_result();
-            
-            if ($row = $res->fetch_assoc()) {
-                $stmt->close();
-                return new DeathNotification($row);
-            }
-            $stmt->close();
-        }
-        
-        return null;
+        return $this->model->getUserNotifications($this->userId);
     }
 
     /**
      * Get funeral logistics for user's notifications
      */
     public function getFuneralLogistics() {
-        require_once __DIR__ . '/../lib/UserDeathsModel.php';
-        $model = new UserDeathsModel($this->mysqli);
-        return $model->getFuneralLogisticsByUser($this->userId);
+        return $this->model->getFuneralLogisticsByUser($this->userId);
+    }
+
+    /**
+     * Get all verified notifications
+     */
+    public function getVerifiedNotifications() {
+        return $this->model->getVerifiedNotifications();
     }
 }
 ?>
