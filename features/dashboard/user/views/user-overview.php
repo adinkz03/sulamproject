@@ -50,8 +50,9 @@
         </div>
 
         <!-- Quick Action: Edit Profile -->
-        <div class="bento-card bento-1x1 card-action">
+        <div class="bento-card bento-2x1 card-action">
             <a href="<?php echo url('profile'); ?>" class="card-action-link">
+                <i class="fa-solid fa-arrow-right" style="position: absolute; top: 1rem; right: 1rem; font-size: 1.25rem; color: #94a3b8;"></i>
                 <div class="bento-icon-sm icon-bg-blue">
                     <i class="fa-solid fa-user-edit text-blue"></i>
                 </div>
@@ -60,36 +61,15 @@
             </a>
         </div>
 
-        <!-- Quick Action: View Donations -->
-        <div class="bento-card bento-1x1 card-action">
-            <a href="<?php echo url('donations'); ?>" class="card-action-link">
-                <div class="bento-icon-sm icon-bg-green">
-                    <i class="fa-solid fa-hand-holding-dollar text-green"></i>
+        <!-- Quick Action: Record Death Notification -->
+        <div class="bento-card bento-2x1 card-action">
+            <a href="<?php echo url('features/death-funeral/user/pages/death-notification.php'); ?>" class="card-action-link">
+                <i class="fa-solid fa-arrow-right" style="position: absolute; top: 1rem; right: 1rem; font-size: 1.25rem; color: #94a3b8;"></i>
+                <div class="bento-icon-sm icon-bg-gray">
+                    <i class="fa-solid fa-clipboard-list text-gray"></i>
                 </div>
-                <h3>Donations</h3>
-                <p>View & contribute</p>
-            </a>
-        </div>
-
-        <!-- Quick Action: Events -->
-        <div class="bento-card bento-1x1 card-action">
-            <a href="<?php echo url('events'); ?>" class="card-action-link">
-                <div class="bento-icon-sm icon-bg-purple">
-                    <i class="fa-solid fa-calendar-check text-purple"></i>
-                </div>
-                <h3>Events</h3>
-                <p>Upcoming activities</p>
-            </a>
-        </div>
-
-        <!-- Quick Action: Contact -->
-        <div class="bento-card bento-1x1 card-action">
-            <a href="#" class="card-action-link">
-                <div class="bento-icon-sm icon-bg-orange">
-                    <i class="fa-solid fa-envelope text-orange"></i>
-                </div>
-                <h3>Contact</h3>
-                <p>Get in touch</p>
+                <h3>Record Death Notification</h3>
+                <p>Report a death in the community</p>
             </a>
         </div>
     </div>

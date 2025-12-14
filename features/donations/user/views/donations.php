@@ -6,6 +6,105 @@
     </div>
 <?php endif; ?>
 
+<style>
+/* Mobile Responsive Styles for User Donations Page */
+@media (max-width: 1023px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 767px) {
+    /* Card grid - single column */
+    .card-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+    
+    /* Donation cards */
+    .donation-card {
+        border-radius: 12px !important;
+    }
+    
+    .donation-card .card-body {
+        padding: 1rem !important;
+    }
+    
+    .donation-card h4 {
+        font-size: 1rem !important;
+    }
+    
+    .donation-card p {
+        font-size: 0.875rem !important;
+    }
+    
+    /* Filter card */
+    .card--filter {
+        margin-bottom: 1rem !important;
+    }
+    
+    .filter-header {
+        padding: 0.875rem 1rem !important;
+    }
+    
+    .filter-title {
+        font-size: 0.95rem !important;
+    }
+    
+    #userDonationsFilterContent {
+        padding: 0.875rem 1rem !important;
+    }
+    
+    .form-input {
+        font-size: 16px !important; /* Prevent iOS zoom */
+        padding: 0.75rem !important;
+    }
+    
+    /* Modal */
+    #donationModal > div {
+        margin: 1rem !important;
+        max-width: calc(100vw - 2rem) !important;
+    }
+    
+    #donationModal > div > div:nth-child(2) {
+        grid-template-columns: 1fr !important;
+    }
+    
+    #donationModal > div > div:nth-child(2) > div:first-child {
+        border-right: none !important;
+        border-bottom: 1px solid #eee !important;
+    }
+    
+    #donationModalTitle {
+        font-size: 1.1rem !important;
+    }
+}
+
+@media (max-width: 479px) {
+    .card-grid {
+        gap: 0.875rem !important;
+    }
+    
+    .donation-card .card-body {
+        padding: 0.875rem !important;
+    }
+    
+    .donation-card h4 {
+        font-size: 0.95rem !important;
+    }
+    
+    #donationModal > div {
+        margin: 0.75rem !important;
+        max-width: calc(100vw - 1.5rem) !important;
+    }
+    
+    #donationModal > div > div:first-child,
+    #donationModal > div > div:nth-child(2) > div {
+        padding: 0.875rem !important;
+    }
+}
+</style>
+
 <?php if (isset($donations)): ?>
     <div class="card card--elevated" style="margin-top: 2rem;">
         <div style="margin-bottom: 1.5rem;">
