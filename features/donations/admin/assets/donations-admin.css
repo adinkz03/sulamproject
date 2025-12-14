@@ -208,3 +208,228 @@
     color: #6b7280;
     border: 1px dashed #d1d5db;
 }
+
+/* =========================================
+   MOBILE RESPONSIVE STYLES
+   ========================================= */
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .donations-page {
+    gap: 1.5rem;
+  }
+  
+  .create-card {
+    padding: 1.5rem;
+  }
+  
+  .form-grid {
+    gap: 1.25rem;
+  }
+  
+  .donations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  
+  .donation-image-container {
+    height: 180px;
+  }
+  
+  .section-title {
+    font-size: 1.35rem;
+  }
+}
+
+/* Mobile (<768px) */
+@media (max-width: 767px) {
+  /* Page layout */
+  .donations-page {
+    gap: 1.25rem;
+    padding: 0;
+  }
+  
+  /* Section headers */
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.875rem;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+  }
+  
+  .section-header .btn-primary {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    justify-content: center;
+  }
+  
+  /* Create form card */
+  .create-card {
+    padding: 1.25rem;
+    border-radius: 10px;
+  }
+  
+  /* Form grid - stack to single column */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .form-group.full-width {
+    grid-column: 1;
+  }
+  
+  /* Form elements */
+  .form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  
+  .form-input,
+  .form-textarea {
+    padding: 0.75rem;
+    font-size: 16px; /* Prevent iOS zoom */
+  }
+  
+  .form-textarea {
+    min-height: 120px;
+  }
+  
+  /* File upload */
+  .file-upload-wrapper {
+    padding: 1.25rem 1rem;
+  }
+  
+  /* Checkbox wrapper */
+  .checkbox-wrapper {
+    padding: 0.5rem 0;
+  }
+  
+  /* Submit button */
+  .btn-primary {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+  }
+  
+  /* Donations grid - single column */
+  .donations-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Donation cards */
+  .donation-card {
+    border-radius: 10px;
+  }
+  
+  .donation-card:hover {
+    transform: none; /* Disable lift on mobile */
+  }
+  
+  .donation-image-container {
+    height: 220px;
+    padding: 1.25rem;
+  }
+  
+  .donation-qr {
+    max-height: 180px;
+  }
+  
+  .donation-content {
+    padding: 1.25rem;
+  }
+  
+  .donation-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .donation-title {
+    font-size: 1rem;
+  }
+  
+  .status-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.625rem;
+  }
+  
+  .donation-desc {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  
+  .donation-meta {
+    font-size: 0.75rem;
+    padding-top: 0.875rem;
+  }
+  
+  /* Empty state */
+  .empty-state {
+    padding: 2rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+  
+  /* Touch feedback */
+  @media (hover: none) {
+    .donation-card:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+/* Small mobile (<480px) */
+@media (max-width: 479px) {
+  .donations-page {
+    gap: 1rem;
+  }
+  
+  .create-card {
+    padding: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.1rem;
+  }
+  
+  .form-grid {
+    gap: 0.875rem;
+  }
+  
+  .form-input,
+  .form-textarea {
+    padding: 0.875rem;
+  }
+  
+  .donation-content {
+    padding: 1rem;
+  }
+  
+  .donation-image-container {
+    height: 200px;
+    padding: 1rem;
+  }
+  
+  .donation-qr {
+    max-height: 160px;
+  }
+  
+  .donation-title {
+    font-size: 0.95rem;
+  }
+  
+  .donation-desc {
+    font-size: 0.85rem;
+  }
+  
+  .empty-state {
+    padding: 1.5rem 1rem;
+  }
+}

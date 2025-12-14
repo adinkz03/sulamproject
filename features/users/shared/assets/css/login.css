@@ -210,6 +210,18 @@ body {
     color: var(--text-primary);
 }
 
+.login-logo {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.login-logo img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
 .login-card h2 {
     color: var(--text-primary);
     font-weight: 800;
@@ -407,4 +419,323 @@ body {
     outline: 2px solid rgba(15, 138, 95, 0.35);
     outline-offset: 2px;
     border-radius: 8px;
+}
+
+/* Textarea for register */
+.login-card textarea,
+.login-card select {
+    box-sizing: border-box;
+    background: #f8faf9;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    color: var(--text-primary);
+    padding: 0.9rem 1rem;
+    width: 100%;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.login-card textarea:focus,
+.login-card select:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(15, 138, 95, 0.1);
+}
+
+/* =========================================
+   MOBILE RESPONSIVE STYLES
+   ========================================= */
+
+/* Large Tablet (1024px - 1200px) */
+@media (max-width: 1200px) {
+  .login-wrapper {
+    gap: 3rem;
+    padding: 2rem 3%;
+  }
+  
+  .event-display {
+    padding-right: 1rem;
+  }
+  
+  .event-card.compact {
+    max-width: 550px;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (max-width: 1023px) {
+  .brand-logo {
+    top: 1.5rem;
+    left: 2rem;
+    font-size: 1.25rem;
+  }
+  
+  .login-wrapper {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 6rem 2rem 2rem;
+    justify-content: flex-start;
+  }
+  
+  /* Event display section - stack above */
+  .event-display {
+    flex: none;
+    width: 100%;
+    max-width: 600px;
+    padding-right: 0;
+    justify-content: center;
+  }
+  
+  .event-card.compact {
+    flex-direction: column;
+    max-width: 100%;
+    min-height: auto;
+  }
+  
+  .event-image-compact {
+    width: 100%;
+    height: 220px;
+  }
+  
+  .event-content-compact {
+    width: 100%;
+    padding: 2rem;
+  }
+  
+  .event-content-compact h3 {
+    font-size: 1.5rem;
+  }
+  
+  /* Login card - full width on tablet */
+  .login-card {
+    max-width: 500px;
+    width: 100%;
+    padding: 2rem;
+  }
+  
+  /* Register mode adjustments */
+  .login-wrapper.register-mode .event-display {
+    display: none;
+  }
+  
+  .login-wrapper.register-mode .login-card {
+    max-width: 600px;
+  }
+}
+
+/* Mobile (<768px) */
+@media (max-width: 767px) {
+  body {
+    min-height: 100vh;
+  }
+  
+  /* Brand logo */
+  .brand-logo {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    font-size: 1.1rem;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 0.5rem 0.875rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .brand-logo i {
+    font-size: 1.1rem;
+  }
+  
+  /* Login wrapper */
+  .login-wrapper {
+    flex-direction: column; /* Ensure column layout for order to work */
+    padding: 5rem 1.25rem 1.5rem;
+    gap: 1.5rem;
+    min-height: 100vh;
+  }
+  
+  /* Hide event section on mobile */
+  .event-display {
+    display: none;
+  }
+  
+  .event-card.compact {
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .event-image-compact {
+    height: 180px;
+  }
+  
+  .date-badge-small {
+    top: 1rem;
+    left: 1rem;
+    padding: 0.5rem 0.65rem;
+  }
+  
+  .date-badge-small .day {
+    font-size: 1.2rem;
+  }
+  
+  .event-content-compact {
+    padding: 1.5rem;
+  }
+  
+  .tag-small {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.7rem;
+  }
+  
+  .event-content-compact h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.625rem;
+  }
+  
+  .event-content-compact p {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Login card */
+  .login-card {
+    max-width: 100%;
+    padding: 1.75rem;
+    border-radius: 16px;
+  }
+  
+  .login-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .login-card form {
+    gap: 1rem;
+  }
+  
+  /* Form elements - iOS zoom prevention */
+  .login-card input[type="text"],
+  .login-card input[type="password"],
+  .login-card input[type="email"],
+  .login-card input[type="tel"],
+  .login-card textarea,
+  .login-card select {
+    font-size: 16px; /* Prevent iOS zoom */
+    padding: 0.875rem;
+  }
+  
+  .login-card label {
+    font-size: 0.85rem;
+    margin-bottom: 0.35rem;
+  }
+  
+  /* Form rows stack on mobile */
+  .form-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  /* Textarea */
+  .login-card textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+  
+  /* Actions */
+  .login-card .actions {
+    gap: 0.875rem;
+    margin-top: 0.75rem;
+  }
+  
+  .login-card .btn {
+    padding: 0.875rem;
+    font-size: 1rem;
+  }
+  
+  .login-card .register-row {
+    font-size: 0.85rem;
+  }
+  
+  /* Notice */
+  .login-card .notice {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Register mode on mobile */
+  .login-wrapper.register-mode .login-card {
+    max-width: 100%;
+  }
+  
+  /* Touch feedback */
+  @media (hover: none) {
+    .event-card.compact:hover {
+      transform: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    .login-card .btn[type="submit"]:hover {
+      transform: none;
+    }
+  }
+}
+
+/* Small mobile (<480px) */
+@media (max-width: 479px) {
+  .brand-logo {
+    font-size: 1rem;
+    padding: 0.4rem 0.75rem;
+  }
+  
+  .login-wrapper {
+    padding: 4.5rem 1rem 1.25rem;
+    gap: 1.25rem;
+  }
+  
+  .event-card.compact {
+    border-radius: 14px;
+  }
+  
+  .event-image-compact {
+    height: 160px;
+  }
+  
+  .event-content-compact {
+    padding: 1.25rem;
+  }
+  
+  .event-content-compact h3 {
+    font-size: 1.1rem;
+  }
+  
+  .event-content-compact p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  
+  .login-card {
+    padding: 1.5rem;
+  }
+  
+  .login-card h2 {
+    font-size: 1.35rem;
+  }
+  
+  .login-card form {
+    gap: 0.875rem;
+  }
+  
+  .carousel-dots {
+    gap: 0.35rem;
+  }
+  
+  .carousel-dots span,
+  .carousel-dots button {
+    width: 5px;
+    height: 5px;
+  }
 }
