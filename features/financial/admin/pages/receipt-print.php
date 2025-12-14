@@ -30,15 +30,21 @@ if (!$deposit) {
     die('Receipt not found.');
 }
 
-// Calculate total amount from category columns
+// Determine visible columns based on filter
+$selectedCategories = $_GET['categories'] ?? [];
+$visibleColumns = empty($selectedCategories) 
+    ? DepositAccountRepository::CATEGORY_COLUMNS 
+    : array_intersect(DepositAccountRepository::CATEGORY_COLUMNS, $selectedCategories);
+
+// Calculate total amount from visible category columns only
 $totalAmount = 0;
-foreach (DepositAccountRepository::CATEGORY_COLUMNS as $col) {
+foreach ($visibleColumns as $col) {
     $totalAmount += (float)($deposit[$col] ?? 0);
 }
 
-// Determine category for display
+// Determine category for display (from visible columns)
 $categoryLabel = '';
-foreach (DepositAccountRepository::CATEGORY_COLUMNS as $col) {
+foreach ($visibleColumns as $col) {
     $val = (float)($deposit[$col] ?? 0);
     if ($val > 0) {
         $categoryLabel = DepositAccountRepository::CATEGORY_LABELS[$col] ?? $col;

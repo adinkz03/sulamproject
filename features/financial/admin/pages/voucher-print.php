@@ -30,10 +30,16 @@ if (!$payment) {
     die('Voucher not found.');
 }
 
-// Calculate total amount from category columns
+// Determine visible columns based on filter
+$selectedCategories = $_GET['categories'] ?? [];
+$visibleColumns = empty($selectedCategories) 
+    ? PaymentAccountRepository::CATEGORY_COLUMNS 
+    : array_intersect(PaymentAccountRepository::CATEGORY_COLUMNS, $selectedCategories);
+
+// Calculate total amount from visible category columns only
 $totalAmount = 0;
 $categories = [];
-foreach (PaymentAccountRepository::CATEGORY_COLUMNS as $col) {
+foreach ($visibleColumns as $col) {
     $val = (float)($payment[$col] ?? 0);
     if ($val > 0) {
         $totalAmount += $val;

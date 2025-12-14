@@ -26,7 +26,7 @@ $data = $controller->index();
 extract($data);
 
 $pageHeader = [
-    'title' => 'Families',
+    'title' => 'Families Registry',
     'breadcrumb' => [
         ['label' => 'Home', 'url' => url('/')],
         ['label' => 'Residents', 'url' => url('features/residents/admin/pages/resident-management.php')],

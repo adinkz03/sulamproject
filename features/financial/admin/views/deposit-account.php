@@ -266,6 +266,12 @@ function formatDepositAmount($value) {
     }
     </script>
 
+    <?php 
+    // Determine visible columns based on filter
+    $selectedCategories = $_GET['categories'] ?? [];
+    $visibleColumns = empty($selectedCategories) ? $categoryColumns : array_intersect($categoryColumns, $selectedCategories);
+    ?>
+    
     <?php if (empty($deposits)): ?>
         <div class="notice" style="text-align: center; padding: 3rem;">
             <i class="fas fa-hand-holding-usd" style="font-size: 3rem; color: var(--muted); margin-bottom: 1rem;"></i>
@@ -280,8 +286,8 @@ function formatDepositAmount($value) {
                         <th>No. Resit</th>
                         <th class="sticky-col-left">Butiran</th>
                         <th>Kaedah Pembayaran</th>
-                        <?php foreach ($categoryLabels as $col => $label): ?>
-                            <th><?php echo htmlspecialchars($label); ?></th>
+                        <?php foreach ($visibleColumns as $col): ?>
+                            <th><?php echo htmlspecialchars($categoryLabels[$col]); ?></th>
                         <?php endforeach; ?>
                         <th>Jumlah</th>
                         <th class="table__cell--actions">Tindakan</th>
@@ -314,7 +320,7 @@ function formatDepositAmount($value) {
                         </td>
                         <?php 
                         $rowTotal = 0;
-                        foreach ($categoryColumns as $col): 
+                        foreach ($visibleColumns as $col): 
                             $val = (float)($row[$col] ?? 0);
                             $rowTotal += $val;
                         ?>
@@ -322,7 +328,16 @@ function formatDepositAmount($value) {
                         <?php endforeach; ?>
                         <td class="table__cell--numeric" style="font-weight: bold;"><?php echo formatDepositAmount($rowTotal); ?></td>
                         <td class="table__cell--actions">
-                            <a href="<?php echo url('financial/receipt-print?id=' . $row['id']); ?>" class="btn btn-sm btn-outline-primary" title="Print Receipt" target="_blank">
+                            <?php 
+                            // Build print URL with category filters
+                            $printUrl = url('financial/receipt-print?id=' . $row['id']);
+                            if (!empty($selectedCategories)) {
+                                foreach ($selectedCategories as $cat) {
+                                    $printUrl .= '&categories[]=' . urlencode($cat);
+                                }
+                            }
+                            ?>
+                            <a href="<?php echo $printUrl; ?>" class="btn btn-sm btn-outline-primary" title="Print Receipt" target="_blank">
                                 <i class="fas fa-print"></i>
                             </a>
                             <a href="<?php echo url('financial/deposit-account/edit?id=' . $row['id']); ?>" class="btn btn-sm btn-secondary" title="Edit">
