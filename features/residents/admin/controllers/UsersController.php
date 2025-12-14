@@ -11,17 +11,19 @@ class UsersController {
 
     public function index() {
         $role = $_GET['role'] ?? null;
+        $search = $_GET['search'] ?? '';
         
         // Validate role
         if ($role && !in_array($role, ['resident', 'admin'])) {
             $role = null;
         }
 
-        $users = $this->model->getUsers($role);
+        $users = $this->model->getUsers($role, $search);
         
         return [
             'users' => $users,
-            'currentRole' => $role
+            'currentRole' => $role,
+            'search' => $search
         ];
     }
 }

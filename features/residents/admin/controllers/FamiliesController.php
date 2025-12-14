@@ -10,7 +10,8 @@ class FamiliesController {
     }
 
     public function index() {
-        $families = $this->model->getFamilies();
-        return ['families' => $families];
+        $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+        $families = $this->model->getFamilies($search);
+        return ['families' => $families, 'search' => $search];
     }
 }

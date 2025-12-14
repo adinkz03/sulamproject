@@ -7,21 +7,41 @@ class UsersModel {
         $this->db = $mysqli;
     }
 
-    public function getUsers($role = null): array {
+    public function getUsers($role = null, $search = ''): array {
         $sql = "SELECT users.*, COUNT(dependent.id) as dependent_count 
                 FROM users 
                 LEFT JOIN dependent ON users.id = dependent.user_id";
         
+        $params = [];
+        $types = "";
+        $whereClauses = [];
+
         if ($role) {
-            $sql .= " WHERE users.roles = ?";
+            $whereClauses[] = "users.roles = ?";
+            $params[] = $role;
+            $types .= "s";
+        }
+
+        if (!empty($search)) {
+            $whereClauses[] = "(users.name LIKE ? OR users.username LIKE ? OR users.email LIKE ? OR users.address LIKE ?)";
+            $searchTerm = "%$search%";
+            $params[] = $searchTerm;
+            $params[] = $searchTerm;
+            $params[] = $searchTerm;
+            $params[] = $searchTerm;
+            $types .= "ssss";
+        }
+
+        if (!empty($whereClauses)) {
+            $sql .= " WHERE " . implode(" AND ", $whereClauses);
         }
         
         $sql .= " GROUP BY users.id ORDER BY users.created_at DESC";
         
         $stmt = $this->db->prepare($sql);
         
-        if ($role) {
-            $stmt->bind_param('s', $role);
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
         }
         
         $stmt->execute();
@@ -29,9 +49,9 @@ class UsersModel {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getFamilies(): array {
+    public function getFamilies($search = ''): array {
         // 1. Get all users (potential heads of families)
-        $allUsers = $this->getUsers(); 
+        $allUsers = $this->getUsers(null, $search); 
 
         if (!is_array($allUsers)) {
             return [];

@@ -1,17 +1,35 @@
+<link rel="stylesheet" href="/features/shared/assets/css/cards.css">
+
 <div class="content-container">
-    <!-- Filter Bar -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1rem; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-subtle);">
-        <div>
-            <strong style="color: var(--text-primary); margin-right: 0.75rem;">Filter by Role:</strong>
-            <select onchange="window.location.href=this.value" class="form-select" style="display: inline-block; width: auto; min-width: 200px;">
-                <option value="?" <?php echo $currentRole === null ? 'selected' : ''; ?>>All Users</option>
-                <option value="?role=resident" <?php echo $currentRole === 'resident' ? 'selected' : ''; ?>>Residents</option>
-                <option value="?role=admin" <?php echo $currentRole === 'admin' ? 'selected' : ''; ?>>Admins</option>
-            </select>
+    <!-- Filter Card (Financial Style) -->
+    <div class="card card--filter" style="width: 100%; margin-bottom: 1.5rem;">
+        <div class="filter-header" onclick="document.getElementById('usersFilterContent').style.display = document.getElementById('usersFilterContent').style.display === 'none' ? 'block' : 'none'" style="cursor: pointer;">
+            <div class="filter-icon"><i class="fas fa-filter"></i></div>
+            <h4 class="filter-title" style="flex: 1;">Filter Users</h4>
+            <i class="fas fa-chevron-down" style="color: #94a3b8;"></i>
         </div>
-        <div style="color: var(--muted); font-size: 0.9rem;">
-            <?php echo count($users); ?> user<?php echo count($users) !== 1 ? 's' : ''; ?> found
+        
+        <div id="usersFilterContent" style="padding: 1rem;">
+            <form id="usersFilterForm" method="get" style="display: grid; grid-template-columns: 1fr auto; gap: 1rem;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #64748b; margin-bottom: 0.5rem;">Search</label>
+                    <input type="text" name="search" placeholder="Search name, username, email..." value="<?php echo htmlspecialchars($search ?? ''); ?>" class="form-input" style="width: 100%;">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 500; color: #64748b; margin-bottom: 0.5rem;">Role</label>
+                    <select name="role" class="form-input" style="width: 100%;">
+                        <option value="">All Roles</option>
+                        <option value="resident" <?php echo ($currentRole ?? '') === 'resident' ? 'selected' : ''; ?>>Residents</option>
+                        <option value="admin" <?php echo ($currentRole ?? '') === 'admin' ? 'selected' : ''; ?>>Admins</option>
+                    </select>
+                </div>
+            </form>
         </div>
+    </div>
+
+    <div id="usersListContainer">
+    <div style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; text-align: right;">
+        <?php echo count($users); ?> user<?php echo count($users) !== 1 ? 's' : ''; ?> found
     </div>
 
     <!-- Users Table -->
@@ -95,4 +113,55 @@
             </table>
         </div>
     <?php endif; ?>
+    </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('usersFilterForm');
+    if (!form) return;
+    
+    const inputs = form.querySelectorAll('input, select');
+    let timeout = null;
+
+    function fetchResults() {
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+        const url = window.location.pathname + '?' + params.toString();
+        
+        const container = document.getElementById('usersListContainer');
+        if (container) container.style.opacity = '0.5';
+        
+        fetch(url)
+        .then(response => response.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newContainer = doc.getElementById('usersListContainer');
+            
+            if (newContainer && container) {
+                container.innerHTML = newContainer.innerHTML;
+            }
+            if (container) container.style.opacity = '1';
+            
+            // Update URL
+            window.history.pushState({}, '', url);
+        })
+        .catch(err => {
+            console.error('Filter error:', err);
+            if (container) container.style.opacity = '1';
+        });
+    }
+
+    inputs.forEach(input => {
+        if (input.tagName === 'SELECT') {
+            input.addEventListener('change', fetchResults);
+        } else {
+            input.addEventListener('input', () => {
+                clearTimeout(timeout);
+                timeout = setTimeout(fetchResults, 300);
+            });
+        }
+    });
+});
+</script>

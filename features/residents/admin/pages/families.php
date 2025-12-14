@@ -34,6 +34,10 @@ $pageHeader = [
     ]
 ];
 
+$additionalStyles = [
+    url('features/shared/assets/css/cards.css')
+];
+
 ob_start();
 include __DIR__ . '/../views/families-list.php';
 $content = ob_get_clean();
