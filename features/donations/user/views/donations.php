@@ -7,12 +7,11 @@
 <?php endif; ?>
 
 <?php if (isset($donations)): ?>
-    <div class="card page-card">
-        <div class="card card--elevated" style="margin-top: 2rem;">
-            <div style="margin-bottom: 1.5rem;">
-                <h3>Donations</h3>
-                <p>Click to view the detail.</p>
-            </div>
+    <div class="card card--elevated" style="margin-top: 2rem;">
+        <div style="margin-bottom: 1.5rem;">
+            <h3>Donations</h3>
+            <p>Click to view the detail.</p>
+        </div>
 
             <!-- Filter Card (Financial Style) -->
             <div class="card card--filter" style="width: 100%; margin-bottom: 1.5rem;">
@@ -62,7 +61,6 @@
             </div>
             <?php endif; ?>
             </div>
-        </div>
     </div>
 
     <!-- Modal -->

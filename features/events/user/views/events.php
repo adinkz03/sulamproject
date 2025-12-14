@@ -7,12 +7,11 @@
 <?php endif; ?>
 
 <?php if (isset($events)): ?>
-    <div class="card page-card">
-        <div class="card card--elevated" style="margin-top: 2rem;">
-            <div style="margin-bottom: 1.5rem;">
-                <h3>Upcoming Events</h3>
-                <p>Click to view the detail.</p>
-            </div>
+    <div class="card card--elevated" style="margin-top: 2rem;">
+        <div style="margin-bottom: 1.5rem;">
+            <h3>Upcoming Events</h3>
+            <p>Click to view the detail.</p>
+        </div>
 
             <!-- Filter Card (Financial Style) -->
             <div class="card card--filter" style="width: 100%; margin-bottom: 1.5rem;">
@@ -76,7 +75,6 @@
             </div>
             <?php endif; ?>
             </div>
-        </div>
     </div>
     
     <!-- Modal -->
