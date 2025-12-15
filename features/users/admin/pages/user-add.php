@@ -12,6 +12,20 @@ requireAdmin();
 $message = '';
 $messageClass = 'notice';
 
+// --- Define income mappings and function ---
+$INCOME_RANGES = [
+    'below_5250' => 5000,
+    'between_5250_11820' => 10000,
+    'above_11820' => 15000
+];
+
+/**
+ * Convert range key to database income value for this procedural file
+ */
+function rangeToIncomeValue($range, $mappings) {
+    return $mappings[$range] ?? null;
+}
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = isset($_POST['name']) ? trim($_POST['name']) : '';
@@ -19,11 +33,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $password = isset($_POST['password']) ? trim($_POST['password']) : '';
     $confirm_password = isset($_POST['confirm_password']) ? trim($_POST['confirm_password']) : '';
-    $roles = isset($_POST['roles']) ? trim($_POST['roles']) : 'user';
+    $role = isset($_POST['roles']) ? trim($_POST['roles']) : 'resident'; // Changed variable name for clarity
     $phone_number = isset($_POST['phone_number']) ? trim($_POST['phone_number']) : null;
     $address = isset($_POST['address']) ? trim($_POST['address']) : null;
+    $housing_status = isset($_POST['housing_status']) ? trim($_POST['housing_status']) : null;
     $marital_status = isset($_POST['marital_status']) ? trim($_POST['marital_status']) : null;
     $income_range = isset($_POST['income_range']) && $_POST['income_range'] !== '' ? trim($_POST['income_range']) : null;
+
+    // Convert range to income value
+    $income = !empty($income_range) ? rangeToIncomeValue($income_range, $INCOME_RANGES) : null;
+
+    // Debug logging - Remove after testing
+    error_log("DEBUG: Role being saved: " . $role);
+    error_log("DEBUG: POST data: " . print_r($_POST, true));
 
     // Validation
     $errors = [];
@@ -35,6 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email format';
     if ($password !== $confirm_password) $errors[] = 'Passwords do not match';
     if (strlen($password) < 6) $errors[] = 'Password must be at least 6 characters';
+    
+    // Validate role
+    if (!in_array($role, ['resident', 'admin'])) {
+        $errors[] = 'Invalid role selected';
+    }
 
     if (empty($errors)) {
         // Check if username or email already exists
@@ -50,14 +77,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Hash password
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
             
-            // Insert new user
-            $stmt = $mysqli->prepare('INSERT INTO users (name, username, email, password, roles, phone_number, address, marital_status, income_range, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())');
+            // For admin role, set personal details to NULL
+            if ($role === 'admin') {
+                $phone_number = null;
+                $address = null;
+                $housing_status = null;
+                $marital_status = null;
+                $income = null;
+            }
+            
+            // Insert new user - Using 'roles' column name to match your schema
+            $stmt = $mysqli->prepare('INSERT INTO users (name, username, email, password, roles, phone_number, address, housing_status, marital_status, income, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())');
             
             if ($stmt) {
-                $stmt->bind_param('sssssssss', $name, $username, $email, $password_hash, $roles, $phone_number, $address, $marital_status, $income_range);
+                $stmt->bind_param('sssssssssi', $name, $username, $email, $password_hash, $role, $phone_number, $address, $housing_status, $marital_status, $income);
                 
                 if ($stmt->execute()) {
-                    $message = 'User created successfully';
+                    $message = 'User created successfully with role: ' . htmlspecialchars($role);
                     $messageClass = 'notice success';
                     
                     // Redirect to user management page after 2 seconds
@@ -65,6 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $message = 'Failed to create user: ' . htmlspecialchars($stmt->error ?: $mysqli->error);
                     $messageClass = 'notice error';
+                    error_log("DB Error: " . $stmt->error);
                 }
                 $stmt->close();
             } else {
@@ -106,7 +143,7 @@ ob_start();
             <label style="margin: 0;">
                 <strong>User Role *</strong>
                 <select name="roles" id="roleSelect" required style="margin-top: 0.5rem;">
-                    <option value="user" <?php echo (!isset($_POST['roles']) || $_POST['roles'] === 'user') ? 'selected' : ''; ?>>Regular User (Resident)</option>
+                    <option value="resident" <?php echo (!isset($_POST['roles']) || $_POST['roles'] === 'resident') ? 'selected' : ''; ?>>Regular User (Resident)</option>
                     <option value="admin" <?php echo (isset($_POST['roles']) && $_POST['roles'] === 'admin') ? 'selected' : ''; ?>>Administrator</option>
                 </select>
                 <small style="display: block; margin-top: 0.25rem; color: #6b7280;">
@@ -188,28 +225,43 @@ ob_start();
                 <textarea name="address" id="address" rows="3"><?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?></textarea>
             </label>
 
-            <label>Monthly Income Range
-                <select name="income_range" id="incomeRange">
-                    <option value="">Select Income Range</option>
-                    <option value="below_5250" <?php echo (isset($_POST['income_range']) && $_POST['income_range'] === 'below_5250') ? 'selected' : ''; ?>>
-                        Below RM5,250
-                    </option>
-                    <option value="between_5250_11820" <?php echo (isset($_POST['income_range']) && $_POST['income_range'] === 'between_5250_11820') ? 'selected' : ''; ?>>
-                        RM5,250 - RM11,820
-                    </option>
-                    <option value="above_11820" <?php echo (isset($_POST['income_range']) && $_POST['income_range'] === 'above_11820') ? 'selected' : ''; ?>>
-                        Above RM11,820
-                    </option>
-                </select>
-            </label>
+            <div class="grid-2">
+                <label for="housing_status">Housing Status
+                    <select id="housing_status" name="housing_status">
+                        <option value="">Select Housing Status</option>
+                        <?php $selected_housing = $_POST['housing_status'] ?? ''; ?>
+                        <option value="renting" <?php echo $selected_housing === 'renting' ? 'selected' : ''; ?>>
+                            Renting
+                        </option>
+                        <option value="own_house" <?php echo $selected_housing === 'own_house' ? 'selected' : ''; ?>>
+                            Own House
+                        </option>
+                    </select>
+                </label>
+
+                <label>Monthly Income Range
+                    <select name="income_range" id="incomeRange">
+                        <option value="">Select Income Range</option>
+                        <option value="below_5250" <?php echo (isset($_POST['income_range']) && $_POST['income_range'] === 'below_5250') ? 'selected' : ''; ?>>
+                            Below RM5,250
+                        </option>
+                        <option value="between_5250_11820" <?php echo (isset($_POST['income_range']) && $_POST['income_range'] === 'between_5250_11820') ? 'selected' : ''; ?>>
+                            RM5,250 - RM11,820
+                        </option>
+                        <option value="above_11820" <?php echo (isset($_POST['income_range']) && $_POST['income_range'] === 'above_11820') ? 'selected' : ''; ?>>
+                            Above RM11,820
+                        </option>
+                    </select>
+                </label>
+            </div>
         </div>
 
-        <div class="actions">
-            <button class="btn btn-primary" type="submit">
+        <div class="actions" style="position: sticky; bottom: 0; background: white; padding: 1rem 0; border-top: 2px solid #e5e7eb; margin-top: 2rem;">
+            <button class="btn btn-primary" type="submit" style="font-size: 1rem; padding: 0.75rem 1.5rem;">
                 <i class="fa-solid fa-user-plus"></i>
                 Create User
             </button>
-            <a class="btn outline" href="<?php echo url('users'); ?>">
+            <a class="btn outline" href="<?php echo url('users'); ?>" style="font-size: 1rem; padding: 0.75rem 1.5rem;">
                 <i class="fa-solid fa-times"></i>
                 Cancel
             </a>
@@ -249,6 +301,7 @@ function togglePersonalDetails() {
         document.getElementById('phoneNumber').value = '';
         document.getElementById('maritalStatus').value = '';
         document.getElementById('address').value = '';
+        document.getElementById('housing_status').value = '';
         document.getElementById('incomeRange').value = '';
     } else {
         // Show personal details for regular users

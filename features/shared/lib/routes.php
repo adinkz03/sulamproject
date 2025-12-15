@@ -377,6 +377,13 @@ $router->get('/admin/user-edit', function() use ($ROOT) {
     require $ROOT . '/features/users/admin/pages/user_edit.php';
 });
 
+$router->post('/admin/user-edit', function() use ($ROOT) {
+    initSecureSession();
+    requireAuth();
+    requireAdmin();
+    require $ROOT . '/features/users/admin/pages/user_edit.php';
+});
+
 $router->get('/admin/waris', function() use ($ROOT) {
     initSecureSession();
     requireAuth();

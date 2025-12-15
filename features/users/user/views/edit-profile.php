@@ -95,8 +95,14 @@ ob_start();
                 <?php endif; ?>
 
                 <div class="actions" style="grid-column: 1 / -1; justify-content: flex-start; margin-top: 1.5rem;">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <a href="<?php echo url('dashboard'); ?>" class="btn btn-secondary">Cancel</a>
+                    <button class="btn btn-primary" type="submit" style="font-size: 1rem; padding: 0.75rem 1.5rem;">
+                    <i class="fa-solid fa-save"></i>
+                    Save Changes
+                    </button>
+                    <a class="btn outline" href="<?php echo url('dashboard'); ?>" style="font-size: 1rem; padding: 0.75rem 1.5rem;">
+                    <i class="fa-solid fa-times"></i>
+                    Cancel
+                    </a>
                 </div>
             </form>
         </div>

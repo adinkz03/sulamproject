@@ -1,1 +1,1 @@
-ALTER TABLE `next_of_kin` ADD COLUMN `relationship` VARCHAR(50) NULL AFTER `name`;
+ALTER TABLE next_of_kin ADD COLUMN relationship VARCHAR(50) NULL AFTER name;

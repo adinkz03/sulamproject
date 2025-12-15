@@ -104,7 +104,7 @@ class ProfileController extends BaseController {
 
         // Update
         $stmt = $this->mysqli->prepare('UPDATE users SET name=?, email=?, phone_number=?, address=?, housing_status=?, marital_status=?, income=? WHERE id=?');
-        $stmt->bind_param('sssssdi', $name, $email, $phone_number, $address, $housing_status, $marital_status, $income, $userId);
+        $stmt->bind_param('ssssssii', $name, $email, $phone_number, $address, $housing_status, $marital_status, $income, $userId);
         
         if ($stmt->execute()) {
             $stmt->close();
